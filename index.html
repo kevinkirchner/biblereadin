@@ -3,8 +3,8 @@
     <head>
         <title>Bible Readin</title>
         <!-- <link rel="stylesheet" href="/assets/vendor/chosen/chosen.css" type="text/css" media="screen" title="chosen"> -->
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">        
-        <link rel="stylesheet" href="/assets/css/main.css" type="text/css" media="screen" title="main" >        
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/css/main.css" type="text/css" media="screen" title="main" >
     </head>
     <body class="light">
         <!-- Passage Loader -->
@@ -21,8 +21,8 @@
                             </li>
                             <li class="loader"><i class="icon-spinner icon-spin"></i> Loading Plans</li>
                             <!-- If nothing loaded - connect/re-connect -->
-                            <li><a href="#"><i class="icon-calendar"></i> Plan 1 ([last read text])</a></li>
-                            <li><a href="#"><i class="icon-calendar"></i> Plan 2 ([last read text])</a></li>
+                            <li><a href="#"><i class="icon-calendar"></i> Plan 1 <small>Stopped at Matthew 7:23</small><small>Start at Matthew 7:24</small></a></li>
+                            <li><a href="#"><i class="icon-calendar"></i> Plan 2 <small>Stopped at Matthew 7:23</small><small>Start at Matthew 7:24</small></a></li>
                             <li class="divider"></li>
                             <li><a href="#"><i class="icon-bookmark"></i> Reference 1</a></li>
                         </ul>
@@ -39,11 +39,15 @@
                     <div class="sub">
                         <ul>
                             <li class="actions">
-                                <a href="#" class="dark-link"><i class="icon-circle-blank icon-large"></i></a>
-                                <a href="#" class="light-link"><i class="icon-circle icon-large"></i></a>
-                                <a href="#"><i class="icon-font icon-large"></i></a>
-                                <a href="#"><i class="icon-exchange icon-large"></i></a>
+                                <a href="#" class="light-link theme-link" data-theme-color="light"><i class="icon-sun icon-large"></i></a>
+                                <a href="#" class="sepia-link theme-link" data-theme-color="sepia"><i class="icon-sun icon-large"></i></a>
+                                <a href="#" class="dark-link theme-link" data-theme-color="dark"><i class="icon-moon icon-large"></i></a>
                             </li>
+<!--
+                            <li class="actions">
+                                <a href="#"><i class="icon-font icon-large"></i></a>
+                            </li>
+-->
                         </ul>
                     </div>
                 </li>
