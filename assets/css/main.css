@@ -36,7 +36,8 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .loader,
 #nav .top .sub a { padding:10px 15px; line-height: 1.3; }
 #nav .top .sub a:hover { background-color: #333; }
-#nav .top .sub a small { display: block; color: #999; line-height: 1.5 ;  }
+#nav .top .sub a small { display: block; color: #888; line-height: 1.5 ;  }
+#nav .top .sub a small span { color: #aaa; }
 #nav .top .sub .actions { overflow: hidden; border-bottom: 1px solid #666; border-top: 1px solid #333;  }
 #nav .top .sub .actions a { background-color: #555;  float: left; width: 33.33332%; display: block; padding:0; line-height: 40px; text-align: center; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border:1px solid #333; border-top-color:#666; border-left-color:#666; }
 #nav .top .sub .actions a:hover { background-color: #444; }
