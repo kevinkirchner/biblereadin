@@ -1,5 +1,5 @@
 * { margin:0; padding:0; }
-body { font-size: 16px; line-height: 1.5;  font-family: Helvetica, Arial, sans-serif; font-weight: 300;  }
+body { font-size: 16px; line-height: 1.5;  font-family: Helvetica, Arial, sans-serif; font-weight: 300; padding-bottom: 150px;  }
 #nav, section { margin:0 auto; }
 h1,h2,h3,h4,h5,h6,b,strong { font-weight: 300; }
 /* General */
