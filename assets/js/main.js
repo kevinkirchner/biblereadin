@@ -109,6 +109,7 @@ function getURLParameter(name) {
         e.preventDefault();
         var psg = getRandomPassage();
         loadPassage( psg );
+        $(this).parents('.top').removeClass('hover');
         return false;
     });
     
@@ -120,6 +121,7 @@ function getURLParameter(name) {
         var themeColor = el.data('theme-color');
         $('body').removeClass(lastClass).addClass( themeColor );
         lastClass = themeColor;
+        $(this).parents('.top').removeClass('hover');
         return false;
     })
 
