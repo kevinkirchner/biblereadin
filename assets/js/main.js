@@ -143,7 +143,15 @@ function getURLParameter(name) {
             // $searchNavIcon.removeClass('icon-spinner icon-spin').addClass('icon-search');
         });
     })
-
+    
+    $('a[rel="psg-link"]').on('click',function(e){
+        e.preventDefault();
+        var el = $(this);
+        if(el.parents('.top').size()) el.parents('.top').removeClass('hover');
+        loadPassage( el.data('psg') );
+        return false;
+    })
+    
     // Onload
     loadPassage( getURLParameter('psg') || getRandomPassage() );
     
