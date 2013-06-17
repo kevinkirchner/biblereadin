@@ -48,6 +48,7 @@ header a { color: #fff; text-decoration: none; display: block; }
 
 /* Content */
 .spacer { height: 2em; line-height: 2em;  }
+body > section b { vertical-align: super; font-size: .7em; }
 body > section > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
 body > section > p.bodytext,
 body > section > p.poetry,
@@ -56,45 +57,50 @@ body > section > p.psasuper,
 body > section > p.bodyblock { display: inline; }
 
 /* Responsive */
-@media (min-width:1200px) {
+@media only screen and (min-width:1200px) {
     body > section { font-size:25px; line-height: 1.5; }
     #nav, section { width: 800px; }
 }
-@media (min-width:800px) and (max-width:1199px) {
+@media only screen and (min-width:800px) and (max-width:1199px) {
     body > section { font-size: 24px; line-height: 1.5; }
     #nav, section { width: 650px; }
 }
-@media (min-width:600px) and (max-width:799px) {
+@media only screen and (min-width:600px) and (max-width:799px) {
     body > section { font-size: 22px; line-height: 1.5; }
     #nav, section { width: 500px; }
 }
-@media (max-width:799px) {
+@media only screen and (max-width:799px) {
     #nav .top { position: static; }
     #nav .top .sub { top:40px; padding-top: 0; }
     #nav .top .sub > ul { -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
     #nav .top .sub > ul:before { display: none; }
 }
-@media (min-width:450px) and (max-width:599px) {
+@media only screen and (min-width:450px) and (max-width:599px) {
     body > section { font-size: 20px; line-height: 1.5; }
     #nav, section { width: 85%; }
 }
-@media (max-width:450px) {
+@media only screen and (max-width:450px) {
     #nav .top { width: 23.9%; }
     #nav .top:last-child { float: right; margin-right: 0; }
     #nav .top > a span { display: none; }
 }
-@media (max-width:449px) {
+@media only screen and (max-width:449px) {
     body > section { font-size: 20px; line-height: 1.5; }
     #nav, section { width: 90%; }
 }
-
+/* Retina */
+@media 
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+    
+}
 
 /* Dark/Light Theme */
 .light-link {}
 .sepia-link {}
 .dark-link {}
 
-body { transition: all .5s ease; }
+body { transition: all .5s ease; -moz-transition: all .5s ease; -webkit-transition: all .5s ease;}
 #nav .top .sub .actions a.theme-link { border-left:1px solid #333; border-right: 0; opacity: 0.9; -moz-opacity: 0.9; filter:alpha(opacity=90);}
 #nav .top .sub .actions a.theme-link:last-child { border-right:1px solid #333;}
 #nav .top .sub .actions a.theme-link:hover { opacity: 1; -moz-opacity: 1; filter:alpha(opacity=1); }
