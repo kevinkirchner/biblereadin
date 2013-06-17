@@ -43,6 +43,7 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .actions a:hover { background-color: #444; }
 #nav .top .sub .actions a:first-child { border-left:0; }
 #nav .top .sub .actions a:last-child { border-right:0; }
+#nav .top .sub .actions a i { margin:0;}
 #nav .top .sub .divider { height: 0px; margin:4px; border-top: 1px solid #333; border-bottom: 1px solid #555;  }
 
 /* Search Nav */
@@ -115,7 +116,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
 
 
 body { transition: all .5s ease; -moz-transition: all .5s ease; -webkit-transition: all .5s ease;}
-#nav .top .sub .actions a.theme-link { border-left:1px solid #333; border-right: 0; opacity: 0.9; -moz-opacity: 0.9; filter:alpha(opacity=90);}
+#nav .top .sub .actions a.theme-link { border-left:1px solid #333; border-right: 0; opacity: 0.95; -moz-opacity: 0.95; filter:alpha(opacity=95);}
 #nav .top .sub .actions a.theme-link:last-child { border-right:1px solid #333;}
 #nav .top .sub .actions a.theme-link:hover { opacity: 1; -moz-opacity: 1; filter:alpha(opacity=1); }
 body.light,

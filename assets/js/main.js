@@ -22,7 +22,7 @@ function setCurrentPassage(psg) {
     var $fbLink = $('a.facebook-link');
     var $twitterLink = $('a.twitter-link');
     var $emailLink = $('a.email-link');
-    // TODO: change links
+    // TODO: change sharing links
     // Facebook
     // Twitter
     // Email
@@ -47,6 +47,7 @@ function getRandomPassage() {
 }
 
 function displayPassages(passages) {
+    // TODO: add support for individual verses
     var plength = passages.length;
     var curBook = '';
     var curChapter = '';
