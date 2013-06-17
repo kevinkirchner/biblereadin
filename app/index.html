@@ -3,18 +3,18 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>It's Bible Readin' Time</title>
-        <link rel="stylesheet" href="/assets/vendor/chosen/chosen.css" />
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/css/main.css" type="text/css" media="screen" title="main" >
+        <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="/assets/css/main.css" />
     </head>
     <body class="light">
         <!-- Passage Loader -->
         <header>
             <ul id="nav">
-                <li class="top">
+                <li class="top read-nav">
                     <a href="#"><i class="icon-book"></i> <span>Read</span></a>
                     <div class="sub">
-                        <ul>
+                        <ul class="inner-sub">
                             <li class="actions">
                                 <a href="#" rel="random"><i class="icon-random icon-large"></i></a>
                                 <a href="#"><i class="icon-plus"></i><i class="icon-bookmark-empty icon-large"></i></a>
@@ -22,7 +22,6 @@
                             </li>
                             <!-- <li class="loader"><i class="icon-spinner icon-spin"></i> Loading Plans</li> -->
                             <!-- If nothing loaded - connect/re-connect -->
-
                             <li>
                                 <a href="#">
                                     <i class="icon-calendar"></i> 
@@ -48,16 +47,25 @@
                         </ul>
                     </div>
                 </li>
-                <li class="top">
+                <li class="top search-nav">
                     <a href="#"><i class="icon-search"></i> <span>Search</span></a>
                     <div class="sub">
-                        <ul><li><a href="#"><i>Coming Soon!</i></a></li></ul>
+                        <div class="inner-sub">
+                            <form name="search" id="search_form" method="GET" action="http://labs.bible.org/api/">
+                                <div class="search-form-container">
+                                    <input type="hidden" name="type" value="json" />
+                                    <input type="hidden" name="formatting" value="para" />
+                                    <input type="hidden" name="callback" value="displayPassages" />
+                                    <input type="text" autocomplete="off" placeholder="Enter Bible passage" value="" name="passage" id="search" />
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </li>
-                <li class="top">
+                <li class="top tweak-nav">
                     <a href="#"><i class="icon-cog"></i> <span>Tweak</span></a>
                     <div class="sub">
-                        <ul>
+                        <ul class="inner-sub">
                             <li class="actions">
                                 <a href="#" class="light-link theme-link" data-theme-color="light"><i class="icon-sun icon-large"></i></a>
                                 <a href="#" class="sepia-link theme-link" data-theme-color="sepia"><i class="icon-sun icon-large"></i></a>
@@ -71,14 +79,14 @@
                         </ul>
                     </div>
                 </li>
-                <li class="top">
+                <li class="top share-nav">
                     <a href="#"><i class="icon-share"></i> <span>Share</span></a>
                     <div class="sub">
-                        <ul>
+                        <ul class="inner-sub">
                             <li class="actions">
-                                <a href="#"><i class="icon-facebook icon-large"></i></a>
-                                <a href="#"><i class="icon-twitter icon-large"></i></a>
-                                <a href="#"><i class="icon-envelope-alt icon-large"></i></a>
+                                <a class="facebook-link" target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://bibleread.in"><i class="icon-facebook icon-large"></i> <span>Share</span></a>
+                                <a class="twitter-link" target="_blank" href="https://twitter.com/share" data-url="http://bibleread.in" data-text="Check out this sweet site: http://bibleread.in" data-via="kevinkirchner"><i class="icon-twitter icon-large"></i> <span>Tweet</span></a>
+                                <a class="email-link" target="_blank" href="mailto:?subject=Wanna%20do%20some%20BibleRead.in%20Together%3F&amp;body=Check%20out%20this%20sweet%20site%3A%20http%3A%2F%2Fbibleread.in"><i class="icon-envelope-alt icon-large"></i> <span>Email</span></a>
                             </li>
                         </ul>
                     </div>
@@ -95,7 +103,7 @@
         </aside>
         <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js" charset="utf-8"></script>
-        <script type="text/javascript" src="http://cdn.jsdelivr.net/chosen/0.9.12/chosen.jquery.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/assets/vendor/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="/assets/js/main.js" charset="utf-8"></script>
     </body>
 </html>
