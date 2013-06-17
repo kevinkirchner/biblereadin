@@ -94,6 +94,7 @@ function getURLParameter(name) {
     
     // Navigation ------------------------------------------//
     var $search = $('#search');
+    var $searchNavIcon = $('.search-nav > a > i');
     $('#nav .top').on('mouseenter', function(){
         var el = $(this);
         el.addClass('hover');
@@ -131,15 +132,19 @@ function getURLParameter(name) {
     });
     
     $('#search_form').on('submit',function(e){
+        $('.search-nav').removeClass('hover');
         e.preventDefault();
+
         var $form = $(this);
         var psg = $search.val();
-        loadPassage( psg ).done(
-            $('.search-nav').removeClass('hover')
-        );
+        // TODO: show/hide loading icons if detected slow connection
+        // $searchNavIcon.removeClass('icon-search').addClass('icon-spinner icon-spin');
+        loadPassage( psg ).complete(function(){
+            // $searchNavIcon.removeClass('icon-spinner icon-spin').addClass('icon-search');
+        });
     })
 
     // Onload
-    loadPassage( getURLParameter('psg') || getRandomPassage() )
+    loadPassage( getURLParameter('psg') || getRandomPassage() );
     
 })(jQuery, this);

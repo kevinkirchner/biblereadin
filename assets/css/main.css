@@ -47,11 +47,11 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .divider { height: 0px; margin:4px; border-top: 1px solid #333; border-bottom: 1px solid #555;  }
 
 /* Search Nav */
-#nav .search-nav .search-form-container { line-height: 30px; padding:0 5px; position: relative; min-height: 30px;  }
-#nav .search-nav ul { padding-top: 5px; }
+#nav .search-nav .form-wrap { line-height: 30px; margin:0 5px; padding:0 5px; background-color: #fff;  position: relative; min-height: 30px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+#nav .search-nav ul { padding-top: 5px; background-color: #444; margin:0 -5px; }
 #nav .search-nav form,
 #nav .search-nav input { margin-bottom: 0; }
-#nav .search-nav input { width: 226px; margin:0 auto;}
+#nav .search-nav input { width: 100%; padding:7px 0; background: none; border:0; box-shadow:none; }
 #nav .search-nav li a { color: #bbb; }
 #nav .search-nav li a strong { font-weight: bold; color: #fff; }
 
@@ -98,7 +98,7 @@ body > section > p.lamhebrew { display: inline; }
     #nav .top > a span { display: none; }
 }
 @media only screen and (max-width:449px) {
-    body > section { font-size: 20px; line-height: 1.5; }
+    body > section { font-size: 18px; line-height: 1.5; }
     #nav, section { width: 90%; }
 }
 /* Retina */
