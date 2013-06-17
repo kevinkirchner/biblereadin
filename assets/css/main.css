@@ -60,6 +60,7 @@ header a { color: #fff; text-decoration: none; display: block; }
 
 /* Content */
 .spacer { height: 2em; line-height: 2em;  }
+body > section h2 { padding-top: 30px; }
 body > section b { vertical-align: super; font-size: .7em; }
 body > section > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
 body > section > p.bodytext,

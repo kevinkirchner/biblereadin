@@ -29,6 +29,7 @@ function setCurrentPassage(psg) {
 }
 
 function loadPassage(psg) {
+    // TODO: if passage contains verse, load the chapter and anchor to the verse
     setCurrentPassage(psg);
     return $.ajax({
         url: "http://labs.bible.org/api/",
@@ -57,14 +58,14 @@ function displayPassages(passages) {
         var p = passages[i];
         if (p.bookname != curBook && p.chapter != curChapter) {
             // add heading
-            txt += '<h2>'+p.bookname+' '+p.chapter+'</h2>'
+            txt += '<h2 id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter.toLowerCase()+'">'+p.bookname+' '+p.chapter+'</h2>'
             
             // if title, add it
             if (p.title) {
                 txt += '<h4><i>'+p.title+'</i></h4>';
             }
             // Add text
-            txt += '<b>'+p.verse+'</b> '+p.text+' ';
+            txt += '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text+' ';
             
             curBook = p.bookName;
             curChapter = p.chapter;
@@ -75,7 +76,7 @@ function displayPassages(passages) {
                 txt += '<div class="spacer"></div><h4><i>'+p.title+'</i></h4>';
             }
             // Add text
-            txt += '<b>'+p.verse+'</b> '+p.text+' ';
+            txt += '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text+' ';
         }
     }
     // Add txt to last section
