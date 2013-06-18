@@ -92,12 +92,17 @@ function getURLParameter(name) {
 }
 
 (function($, window, undefined){
+    // Onload
+    loadPassage( getURLParameter('psg') || getRandomPassage() );
     
     // Navigation ------------------------------------------//
     var $search = $('#search');
-    var $searchNavIcon = $('.search-nav > a > i');
+    var $searchNav = $('.search-nav');
+    var $searchNavIcon = $searchNav.find('> a > i');
+    
     $('#nav .top').on('mouseenter', function(){
         var el = $(this);
+        $('#nav .top').trigger('mouseleave');
         el.addClass('hover');
         if (el.hasClass('search-nav')) {
             $search.trigger('focus');
@@ -133,7 +138,7 @@ function getURLParameter(name) {
     });
     
     $('#search_form').on('submit',function(e){
-        $('.search-nav').removeClass('hover');
+        $searchNav.removeClass('hover');
         e.preventDefault();
 
         var $form = $(this);
@@ -145,6 +150,19 @@ function getURLParameter(name) {
         });
     })
     
+    // Show search when start typing
+    $(document).on('keydown',function(e){
+        if (!$searchNav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
+            $searchNav.trigger('mouseenter');
+        }
+        if (e.keyCode == 27) {
+            $searchNav.trigger('mouseleave');
+        }
+    }).on('click',function(e){
+        if ($searchNav.has(e.target).length === 0) $searchNav.trigger('mouseleave');
+    });
+    
+    // Passage Links
     $('a[rel="psg-link"]').on('click',function(e){
         e.preventDefault();
         var el = $(this);
@@ -152,8 +170,5 @@ function getURLParameter(name) {
         loadPassage( el.data('psg') );
         return false;
     })
-    
-    // Onload
-    loadPassage( getURLParameter('psg') || getRandomPassage() );
     
 })(jQuery, this);
