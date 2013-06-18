@@ -48,7 +48,7 @@ function getRandomPassage() {
 }
 
 function displayPassages(passages) {
-    // TODO: add support for individual verses
+    // TODO: wrap individual verses
     var plength = passages.length;
     var curBook = '';
     var curChapter = '';
@@ -151,6 +151,7 @@ function getURLParameter(name) {
     })
     
     // Show search when start typing
+    // TODO: optimize keycodes - http://stackoverflow.com/questions/7694486/browser-key-code-list
     $(document).on('keydown',function(e){
         if (!$searchNav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
             $searchNav.trigger('mouseenter');
