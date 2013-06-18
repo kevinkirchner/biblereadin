@@ -46,6 +46,7 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .actions { overflow: hidden; border-bottom: 1px solid #666; border-top: 1px solid #333;  }
 #nav .top .sub .actions a { background-color: #555;  float: left; width: 33.33332%; display: block; padding:0; line-height: 40px; text-align: center; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border:1px solid #333; border-top-color:#666; border-left-color:#666; }
 #nav .top .sub .actions2 a { width: 49.9998%; }
+#nav .top .sub .actions4 a { width: 24.9998%; }
 #nav .top .sub .actions a:hover { background-color: #444; }
 #nav .top .sub .actions a:first-child { border-left:0; }
 #nav .top .sub .actions a:last-child { border-right:0; }
@@ -121,13 +122,18 @@ only screen and (min-device-pixel-ratio : 1.5) {
     
 }
 
-/* Dark/Light Theme */
+/* Tweaks */
+body.light #nav .top .sub .actions a.light-link,
+body.sepia #nav .top .sub .actions a.sepia-link,
+body.dark #nav .top .sub .actions a.dark-link,
+body.times .font-link.times,
+body.helvetica .font-link.helvetica { display: none !important; } 
+
+/* Themes */
 /*
 ::selection { background: rgba(0,0,0,.1); color: #346D9F; }
 ::-moz-selection { background: rgba(0,0,0,.1); color: #fff; }
 */
-
-
 body { transition: all .5s ease; -moz-transition: all .5s ease; -webkit-transition: all .5s ease;}
 body.light,
 #nav .top .sub .actions a.light-link { background-color: #eee; color: #333; }
@@ -136,10 +142,10 @@ body.sepia,
 body.dark,
 #nav .top .sub .actions a.dark-link { background-color: #111; color: #666; }
 
-/* Dark Theme */
-
 /* Fonts */
 body.times > section,
 .font-link.times { font-family: "Times New Roman", Times, serif; }
 body.helvetica > section,
 .font-link.helvetica { font-family: Helvetica, Arial, sans-serif; }
+
+

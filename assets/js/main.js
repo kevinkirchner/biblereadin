@@ -132,7 +132,7 @@ function getURLParameter(name) {
         return false;
     });
     
-    var lastFont = 'raleway';
+    var lastFont = 'helvetica';
     $('.font-link').on('click', function(e) {
         e.preventDefault();
         var el = $(this);
