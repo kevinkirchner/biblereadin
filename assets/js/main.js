@@ -121,16 +121,27 @@ function getURLParameter(name) {
     });
     
     // Tweak Nav
-    var lastClass = 'light';
+    var lastTheme = 'light';
     $('.theme-link').on('click', function(e) {
         e.preventDefault();
         var el = $(this);
         var themeColor = el.data('theme-color');
-        $('body').removeClass(lastClass).addClass( themeColor );
-        lastClass = themeColor;
+        $('body').removeClass(lastTheme).addClass( themeColor );
+        lastTheme = themeColor;
         $(this).parents('.top').removeClass('hover');
         return false;
-    })
+    });
+    
+    var lastFont = 'raleway';
+    $('.font-link').on('click', function(e) {
+        e.preventDefault();
+        var el = $(this);
+        var font = el.data('font');
+        $('body').removeClass(lastFont).addClass( font );
+        lastFont = font;
+        $(this).parents('.top').removeClass('hover');
+        return false;
+    });
 
     // Search Nav
     $search.typeahead({
