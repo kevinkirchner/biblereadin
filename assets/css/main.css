@@ -1,6 +1,6 @@
 /* General */
 * { margin:0; padding:0; }
-body { font-size: 16px; line-height: 1.5;  font-family: Helvetica, Arial, sans-serif; font-weight: 300; padding-bottom: 150px;  }
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;  font-size: 16px; line-height: 1.5;  font-family: Helvetica, Arial, sans-serif; font-weight: 300; padding-bottom: 150px;  }
 #nav, section { margin:0 auto; }
 h1,h2,h3,h4,h5,h6,body > section b, body > section strong { font-weight: 300; }
 a { color: #08c; }
@@ -73,7 +73,6 @@ header a { color: #fff; text-decoration: none; display: block; }
 
 /* Content */
 .spacer { height: 2em; line-height: 2em;  }
-body > section h2 { padding-top: 30px; }
 body > section b[id] { vertical-align: super; font-size: .7em; position: relative; top: .15em; }
 body > section > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
 body > section > p.bodytext,
@@ -126,8 +125,8 @@ only screen and (min-device-pixel-ratio : 1.5) {
 body.light #nav .top .sub .actions a.light-link,
 body.sepia #nav .top .sub .actions a.sepia-link,
 body.dark #nav .top .sub .actions a.dark-link,
-body.times .font-link.times,
-body.helvetica .font-link.helvetica { display: none !important; } 
+body.serif .font-link.serif,
+body.sans .font-link.sans { display: none !important; } 
 
 /* Themes */
 /*
@@ -143,9 +142,9 @@ body.dark,
 #nav .top .sub .actions a.dark-link { background-color: #111; color: #666; }
 
 /* Fonts */
-body.times > section,
-.font-link.times { font-family: "Times New Roman", Times, serif; }
-body.helvetica > section,
-.font-link.helvetica { font-family: Helvetica, Arial, sans-serif; }
+body.serif > section,
+.font-link.serif { font-family: "Droid Serif", "Times New Roman", Times, serif; }
+body.sans > section,
+.font-link.sans { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 

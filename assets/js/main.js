@@ -47,8 +47,28 @@ function getRandomPassage() {
     return book+' '+ch;
 }
 
+function formatPassage(p) {
+    return '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text;
+    
+    // FIXME
+/*
+    var txt = p.text;
+    // If opening tag, replace with p, span, else, add span
+    var sp = '<span data-psg="'+p.bookname+' '+p.chapter+':'+p.verse+'">';
+    if (txt.indexOf('<p')) {
+        var pos = txt.indexOf('>') + 1;
+        var txt = '</span><!-- closing -->'+txt.substring(0,pos) + sp + txt.substring(pos);
+    } else {
+        txt = sp+txt;
+    }
+    txt.replace('</p>', '</span></p><span>');
+    return '</span><b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+txt+' ';
+*/
+}
+
 function displayPassages(passages) {
     // TODO: wrap individual verses
+    console.log(passages);
     var plength = passages.length;
     var curBook = '';
     var curChapter = '';
@@ -65,7 +85,7 @@ function displayPassages(passages) {
                 txt += '<h4><i>'+p.title+'</i></h4>';
             }
             // Add text
-            txt += '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text+' ';
+            txt += formatPassage(p);
             
             curBook = p.bookName;
             curChapter = p.chapter;
@@ -76,11 +96,18 @@ function displayPassages(passages) {
                 txt += '<div class="spacer"></div><h4><i>'+p.title+'</i></h4>';
             }
             // Add text
-            txt += '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text+' ';
+            txt += formatPassage(p);
         }
     }
     // Add txt to last section
     $('body > section').html( txt );
+    attachVerseEvents();
+}
+
+function attachVerseEvents() {
+    $('body > section').click(function(e){
+        console.log(e.target);
+    })
 }
 
 function getURLParameter(name) {
@@ -132,7 +159,7 @@ function getURLParameter(name) {
         return false;
     });
     
-    var lastFont = 'helvetica';
+    var lastFont = 'sans';
     $('.font-link').on('click', function(e) {
         e.preventDefault();
         var el = $(this);
@@ -154,10 +181,8 @@ function getURLParameter(name) {
 
         var $form = $(this);
         var psg = $search.val();
-        // TODO: show/hide loading icons if detected slow connection
-        // $searchNavIcon.removeClass('icon-search').addClass('icon-spinner icon-spin');
         loadPassage( psg ).complete(function(){
-            // $searchNavIcon.removeClass('icon-spinner icon-spin').addClass('icon-search');
+            $search.val('');
         });
     })
     
@@ -165,7 +190,9 @@ function getURLParameter(name) {
     // TODO: optimize keycodes - http://stackoverflow.com/questions/7694486/browser-key-code-list
     $(document).on('keydown',function(e){
         if (!$searchNav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
-            $searchNav.trigger('mouseenter');
+            if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+                $searchNav.trigger('mouseenter');
+            }
         }
         if (e.keyCode == 27) {
             $searchNav.trigger('mouseleave');
