@@ -120,7 +120,7 @@ function getURLParameter(name) {
 
 (function($, window, undefined){
     // Onload
-    loadPassage( getURLParameter('psg') || getRandomPassage() );
+    // loadPassage( getURLParameter('psg') || getRandomPassage() );
     
     // Navigation ------------------------------------------//
     var $search = $('#search');
@@ -139,12 +139,17 @@ function getURLParameter(name) {
     });
     
     // Read Nav
+    // FIXME
     $('a[rel="show-nav"]').on('click', function(e){
         e.preventDefault();
         var el = $(this);
         var navSelector = el.attr('href');
         var shownNav = $('.read-nav .inner-sub > li:visible:not(.actions)');
-        $(navSelector).add(shownNav).add(el).add('.read-nav .actions a:not(:visible)').toggle();
+        if (navSelector != '#'+shownNav.attr('id')) {
+            $(navSelector).add(shownNav).toggle();
+            $('.read-nav .hover').removeClass('hover');
+            el.addClass('hover')
+        }
         return false;
     })
     
