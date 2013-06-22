@@ -10,7 +10,7 @@ a { color: #08c; }
 .a-center { text-align: center; }
 
 /* Header Nav */
-header { height: 40px; position: relative; color: #fff; margin-bottom: 20px; background-color: #222; }
+header { height: 40px; position: relative; color: #fff; margin-bottom: 20px; background-color: #222; z-index: 10; }
 header a { color: #fff; text-decoration: none; display: block; }
 #nav { }
 #nav,
@@ -87,7 +87,7 @@ header a { color: #fff; text-decoration: none; display: block; }
 
 /* Content */
 .spacer { height: 2em; line-height: 2em;  }
-body > section b[id] { vertical-align: super; font-size: .7em; position: relative; top: .15em; }
+body > section b[id] { vertical-align: super; font-size: .7em; position: relative; top: .15em; z-index: 1; }
 body > section > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
 body > section > p.bodytext,
 body > section > p.poetry,
