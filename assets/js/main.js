@@ -18,6 +18,7 @@ var CURRENT_PASSAGE;
 
 function setCurrentPassage(psg) {
     CURRENT_PASSAGE = psg;
+    console.log(psg);
     // Set share links
     var $fbLink = $('a.facebook-link');
     var $twitterLink = $('a.twitter-link');
@@ -68,7 +69,6 @@ function formatPassage(p) {
 
 function displayPassages(passages) {
     // TODO: wrap individual verses
-    console.log(passages);
     var plength = passages.length;
     var curBook = '';
     var curChapter = '';
@@ -120,7 +120,8 @@ function getURLParameter(name) {
 
 (function($, window, undefined){
     // Onload
-    // loadPassage( getURLParameter('psg') || getRandomPassage() );
+    loadPassage( getURLParameter('psg') || getRandomPassage() );
+    
     
     // Navigation ------------------------------------------//
     var $search = $('#search');
@@ -139,7 +140,6 @@ function getURLParameter(name) {
     });
     
     // Read Nav
-    // FIXME
     $('a[rel="show-nav"]').on('click', function(e){
         e.preventDefault();
         var el = $(this);
@@ -169,9 +169,17 @@ function getURLParameter(name) {
         var themeColor = el.data('theme-color');
         $('body').removeClass(lastTheme).addClass( themeColor );
         lastTheme = themeColor;
+        amplify.store('br_theme',themeColor);
         $(this).parents('.top').removeClass('hover');
         return false;
     });
+    
+    var savedTheme = amplify.store('br_theme');
+    if (typeof savedTheme != undefined && savedTheme != 'light') {
+        setTimeout(function(){
+            $('.theme-link[data-theme-color="'+savedTheme+'"]').trigger('click');
+        }, 1000);
+    }
     
     var lastFont = 'sans';
     $('.font-link').on('click', function(e) {
@@ -180,9 +188,16 @@ function getURLParameter(name) {
         var font = el.data('font');
         $('body').removeClass(lastFont).addClass( font );
         lastFont = font;
+        amplify.store('br_font',font);
         $(this).parents('.top').removeClass('hover');
         return false;
     });
+    
+    var savedFont = amplify.store('br_font');
+    if (typeof savedFont != undefined && savedFont != 'sans') {
+        $('.font-link[data-font="'+savedFont+'"]').trigger('click');
+    }
+    
 
     // Search Nav
     $search.typeahead({
