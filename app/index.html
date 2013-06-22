@@ -17,36 +17,88 @@
                     <div class="sub">
                         <ul class="inner-sub">
                             <li class="actions">
+                                <a href="#bookmarks" rel="show-nav"><i class="icon-bookmark icon-large"></i></a>
+                                <a href="#reading_plans" rel="show-nav"><i class="icon-plus"></i><i class="icon-calendar icon-large"></i></a>
+                                <a href="#log" style="display:none" rel="show-nav"><i class="icon-list icon-large"></i></a>
                                 <a href="#" rel="random"><i class="icon-random icon-large"></i></a>
-                                <a href="#"><i class="icon-plus"></i><i class="icon-bookmark-empty icon-large"></i></a>
-                                <a href="#"><i class="icon-plus"></i><i class="icon-calendar icon-large"></i></a>
                             </li>
-                            <!-- <li class="loader"><i class="icon-spinner icon-spin"></i> Loading Plans</li> -->
-                            <!-- If nothing loaded - connect/re-connect -->
-<!--
-                            <li>
-                                <a href="#" rel="psg-link" data-psg="Matthew 7:23">
-                                    <i class="icon-calendar"></i> 
-                                    Plan 1
-                                    <small>Today <span>Matthew 7:23</span></small>
-                                    <small>Sat (6/16) <span>Matthew 7:24</span></small>
-                                    <small>Fri (6/16) <span>Matthew 7:24</span></small>
-                                </a>
+                            <li id="log">
+                                <h4><i class="icon-list"></i> Your Readin' Log</h4>
+                                <ul>
+                                    <li class="unread">
+                                        <span class="date">Today</span>
+                                        <a href="#" rel="psg-link" data-psg="Matthew 7:23">
+                                            Matthew 7:23
+                                            <small><i class="icon-calendar"></i> [Plan Name]</small>
+                                        </a>
+                                    </li>
+                                    <li class="unread">
+                                        <a href="#" rel="psg-link" data-psg="Matthew 7:23">
+                                            Matthew 7:23
+                                            <small><i class="icon-calendar"></i> [Plan Name]</small>
+                                        </a>
+                                    </li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a></li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <span class="date">June 21</span>
+                                        <a href="#" rel="psg-link" data-psg="Matthew 7:23">
+                                            Matthew 7:23
+                                            <small><i class="icon-calendar"></i> [Plan Name]</small>
+                                        </a>
+                                    </li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a></li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a></li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <span class="date">June 20</span>
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" rel="psg-link" data-psg="Matthew 7:23">
+                                            Matthew 7:23
+                                            <small><i class="icon-calendar"></i> [Plan Name]</small>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li>
-                                <a href="#" rel="psg-link" data-psg="Matthew 7:23">
-                                    <i class="icon-calendar"></i> 
-                                    Plan 1
-                                    <small>Today <span>Matthew 7:23</span></small>
-                                    <small>Sat (6/16) <span>Matthew 7:24</span></small>
-                                    <small>Fri (6/16) <span>Matthew 7:24</span></small>
-                                </a>
+                            <li id="bookmarks">
+                                <h4><i class="icon-bookmark-empty"></i> Your Bookmarks</h4>
+                                <ul>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
+                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
+                                </ul>
                             </li>
-                            <li class="divider"></li>
-                            <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101 <small>Read <span>June 10, 2013</span></small></a></li>
-                            <li><a href="#" rel="psg-link" data-psg="Luke 5"><i class="icon-bookmark"></i> Luke 5 <small>Read <span>June 12, 2013</span></small></a></li>
-                            <li><a href="#" rel="psg-link" data-psg="Matthew 22"><i class="icon-bookmark"></i> Matthew 22 <small>Read <span>June 16, 2013</span></small></a></li>
--->
+                            <li id="reading_plans">
+                                <h4><i class="icon-calendar"></i> Add a Readin' Plan</h4>
+                                <ul>
+                                    <li class="custom"><a href="#"><i class="icon-plus"></i> Make Custom Readin' Plan</a></li>
+                                    <li>
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </li>

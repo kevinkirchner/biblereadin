@@ -13,7 +13,7 @@ header { height: 40px; position: relative; color: #fff; margin-bottom: 20px; bac
 header a { color: #fff; text-decoration: none; display: block; }
 #nav { }
 #nav,
-#nav li { list-style: none; line-height: 40px; }
+#nav li { list-style: none; line-height: 40px; position: relative; }
 #nav .top { display: inline-block; position: relative; width: 24%; text-align: center; }
 #nav .top > a { }
 #nav .top.hover > a { background-color: #444; }
@@ -52,6 +52,15 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .actions a:last-child { border-right:0; }
 #nav .top .sub .actions a i { margin:0;}
 #nav .top .sub .divider { height: 0px; margin:4px; border-top: 1px solid #333; border-bottom: 1px solid #555;  }
+
+/* Read Nav */
+#nav .read-nav h4 { padding: 5px 15px 0; font-size: 20px; background-color: #333;  line-height: 2; border-bottom: 1px solid #666;  }
+#nav .read-nav .inner-sub > li { display: none; }
+#nav .read-nav .inner-sub > .actions,
+#nav .read-nav .inner-sub > #log { display: inherit; }
+#nav .read-nav #log a { opacity:.55; position: relative; z-index: 10;  }
+#nav .read-nav #log .unread a { opacity: 1; }
+#nav span.date { color: #888; position: absolute; right:15px; top:50%; font-size: 16px; z-index: 15; border-bottom: 1px solid #888; line-height: 20px; margin-top: -11px;  }
 
 /* Search Nav */
 #nav .search-nav .form-wrap { line-height: 30px; margin:0 5px; padding:0 5px; background-color: #fff;  position: relative; min-height: 40px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
@@ -98,7 +107,7 @@ body > section > p.lamhebrew { display: inline; }
 @media only screen and (max-width:799px) {
     #nav .top { position: static; }
     #nav .top .sub { top:40px; padding-top: 0; left:0; right:0; width: auto; margin-left: 0;   }
-    #nav .top .sub .inner-sub { -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; }
+    #nav .top .sub .inner-sub { -webkit-border-radius: 0 0 5px 5px; -moz-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px; }
     #nav .top .sub .inner-sub:before { display: none; }
 }
 @media only screen and (min-width:450px) and (max-width:599px) {
