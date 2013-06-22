@@ -17,10 +17,10 @@
                     <div class="sub">
                         <ul class="inner-sub">
                             <li class="actions actions4">
-                                <a href="#log" rel="show-nav" class="hover"><i class="icon-list icon-large"></i></a>
-                                <a href="#bookmarks" rel="show-nav"><i class="icon-bookmark icon-large"></i></a>
-                                <a href="#reading_plans" rel="show-nav"><i class="icon-plus"></i><i class="icon-calendar icon-large"></i></a>
-                                <a href="#" rel="random"><i class="icon-random icon-large"></i></a>
+                                <a title="Your Readin' Log" href="#log" rel="show-nav" class="hover"><i class="icon-list icon-large"></i></a>
+                                <a title="Your Bookmarks" href="#bookmarks" rel="show-nav"><i class="icon-bookmark icon-large"></i></a>
+                                <a title="Add a Readin' Plan" href="#reading_plans" rel="show-nav"><i class="icon-plus"></i><i class="icon-calendar icon-large"></i></a>
+                                <a title="Load a Random Chapter" href="#" rel="random"><i class="icon-random icon-large"></i></a>
                             </li>
                             <li id="log">
                                 <h4><i class="icon-list"></i> Your Readin' Log</h4>
@@ -104,7 +104,7 @@
                     </div>
                 </li>
                 <li class="top search-nav">
-                    <a href="#!search"><i class="icon-search"></i> <span>Search</span></a>
+                    <a title="Search" href="#!search"><i class="icon-search"></i> <span>Search</span></a>
                     <div class="sub">
                         <div class="inner-sub">
                             <form name="search" id="search_form" method="GET" action="http://labs.bible.org/api/">
@@ -119,7 +119,7 @@
                     </div>
                 </li>
                 <li class="top tweak-nav">
-                    <a href="#"><i class="icon-cog"></i> <span>Tweak</span></a>
+                    <a title="Tweak" href="#"><i class="icon-cog"></i> <span>Tweak</span></a>
                     <div class="sub">
                         <ul class="inner-sub">
                             <li class="actions">
@@ -133,21 +133,21 @@
                     </div>
                 </li>
                 <li class="top share-nav">
-                    <a href="#"><i class="icon-share"></i> <span>Share</span></a>
+                    <a title="Share" href="#"><i class="icon-share"></i> <span>Share</span></a>
                     <div class="sub">
                         <ul class="inner-sub">
                             <li class="actions">
-                                <a class="facebook-link" target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://bibleread.in"><i class="icon-facebook icon-large"></i> <span>Share</span></a>
-                                <a class="twitter-link" target="_blank" href="https://twitter.com/share" data-url="http://bibleread.in" data-text="Check out this sweet site: http://bibleread.in" data-via="kevinkirchner"><i class="icon-twitter icon-large"></i> <span>Tweet</span></a>
-                                <a class="email-link" target="_blank" href="mailto:?subject=Wanna%20do%20some%20BibleRead.in%20Together%3F&amp;body=Check%20out%20this%20sweet%20site%3A%20http%3A%2F%2Fbibleread.in"><i class="icon-envelope-alt icon-large"></i> <span>Email</span></a>
+                                <a title="Share on facebook" class="facebook-link" target="_blank" href="http://www.facebook.com/sharer/sharer.php?u=http://bibleread.in"><i class="icon-facebook icon-large"></i> <span>Share</span></a>
+                                <a title="Share on twitter" class="twitter-link" target="_blank" href="https://twitter.com/share" data-url="http://bibleread.in" data-text="Check out this sweet site: http://bibleread.in" data-via="kevinkirchner"><i class="icon-twitter icon-large"></i> <span>Tweet</span></a>
+                                <a title="Share via email" class="email-link" target="_blank" href="mailto:?subject=Wanna%20do%20some%20BibleRead.in%20Together%3F&amp;body=Check%20out%20this%20sweet%20site%3A%20http%3A%2F%2Fbibleread.in"><i class="icon-envelope-alt icon-large"></i> <span>Email</span></a>
                             </li>
                             <li class="a-center"><small><i class="icon-arrow-up"></i> Share what you're readin' <i class="icon-arrow-up"></i></small></li>
                             <li class="divider"></li>
                             <li>
-                                <a href="#"><i class="icon-thumbs-up"></i> <span>Share Your Feedback</span><small>Bugs, Ideas, Encouragement!</small></a>
+                                <a title="Share Your Feedback" href="#"><i class="icon-thumbs-up"></i> <span>Share Your Feedback</span><small>Bugs, Ideas, Encouragement!</small></a>
                             </li>
                             <li>
-                                <a href="#"> <i class="icon-repeat"></i> Keep Sharing by Donating<small>Help cover hosting &amp; development costs by donating with PayPal</small></a>
+                                <a title="Keep Sharing by Donating" href="#"> <i class="icon-repeat"></i> Keep Sharing by Donating<small>Help cover hosting &amp; development costs by donating with PayPal</small></a>
                             </li>
                         </ul>
                     </div>
@@ -163,9 +163,19 @@
         <!-- Peripherals -->
         <aside>
         </aside>
-        <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="/assets/vendor/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="/assets/js/main.js" charset="utf-8"></script>
+        
+        <!-- Begin Google Analytics Code -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-41786263-1', 'bibleread.in');
+          ga('send', 'pageview');
+        </script>
     </body>
 </html>
