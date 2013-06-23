@@ -8,6 +8,7 @@ a { color: #08c; }
 
 /* Utilities */
 .a-center { text-align: center; }
+.no-display { display: none !important; }
 
 /* Header Nav */
 header { height: 40px; position: relative; color: #fff; margin-bottom: 20px; background-color: #222; z-index: 10; }
@@ -96,18 +97,28 @@ body > section > p.psasuper,
 body > section > p.bodyblock,
 body > section > p.lamhebrew { display: inline; }
 
-/* Responsive */
+/* Modals ============================================= */
+.modal.fade.in { top:20%;}
+/* Intro Styles */
+.modal-header small { float: right; font-size: 12px; margin-right: 20px; line-height: 36px;  }
+.modal-body p { font-size: 14px; }
+.modal-footer p.response { margin: 0; font-size: 12px; text-align: center; }
+.modal-footer p.response a { font-size: 14px; }
+.modal-footer p.response .no { padding-left: 20px; }
+
+
+/* Responsive ============================================= */
 @media only screen and (min-width:1200px) {
     body > section { font-size:25px; line-height: 1.5; }
-    #nav, section { width: 800px; }
+    #nav, body > section { width: 800px; }
 }
 @media only screen and (min-width:800px) and (max-width:1199px) {
     body > section { font-size: 24px; line-height: 1.5; }
-    #nav, section { width: 650px; }
+    #nav, body > section { width: 650px; }
 }
 @media only screen and (min-width:600px) and (max-width:799px) {
     body > section { font-size: 22px; line-height: 1.5; }
-    #nav, section { width: 500px; }
+    #nav, body > section { width: 500px; }
 }
 @media only screen and (max-width:799px) {
     #nav .top { position: static; }
@@ -115,18 +126,22 @@ body > section > p.lamhebrew { display: inline; }
     #nav .top .sub .inner-sub { -webkit-border-radius: 0 0 5px 5px; -moz-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px; }
     #nav .top .sub .inner-sub:before { display: none; }
 }
-@media only screen and (min-width:450px) and (max-width:599px) {
-    body > section { font-size: 20px; line-height: 1.5; }
-    #nav, section { width: 85%; }
+@media only screen and (max-width:600px) {
+    .modal { margin-left: 0; left:2.5%; width:95%;}
+    .modal-header small { float: none; display: block; line-height: 1.2; }
+    .modal-footer p.response span { display: block; }
+    .modal-footer p.response .no { padding-left: 0; margin-top: 10px; }
 }
-@media only screen and (max-width:450px) {
+@media only screen and (min-width:450px) and (max-width:600px) {
+    body > section { font-size: 20px; line-height: 1.5; }
+    #nav, body > section { width: 85%; }
+}
+@media only screen and (max-width:449px) {
     #nav .top { width: 23.9%; }
     #nav .top:last-child { float: right; margin-right: 0; }
     #nav .top > a span { display: none; }
-}
-@media only screen and (max-width:449px) {
     body > section { font-size: 18px; line-height: 1.5; }
-    #nav, section { width: 90%; }
+    #nav, body > section { width: 90%; }
 }
 /* Retina */
 @media 
