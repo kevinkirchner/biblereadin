@@ -150,6 +150,8 @@ function runTour() {
     var $header = $('body > header');
     var isMobile = $navTop.css('position') == 'static';
     
+    $('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
+    
     $navTop.on('mouseenter', function(){
         if (SHOWING_TOUR) return;
         var el = $(this);
@@ -164,7 +166,7 @@ function runTour() {
     });
     
     // Read Nav
-    $('a[rel="show-nav"]').on('mouseover', function(){
+    $('a[rel="show-nav"]').on('click', function(){
         if (SHOWING_TOUR) return;
         var el = $(this);
         var navSelector = el.attr('href');
@@ -174,7 +176,7 @@ function runTour() {
             $('.read-nav .hover').removeClass('hover');
             el.addClass('hover')
         }
-    })
+    });
     
     $('a[rel=random]').on('click',function(e){
         e.preventDefault();
@@ -287,8 +289,7 @@ function runTour() {
             if (arguments.length) {
                 arguments[0].preventDefault();
             }
-            $navTop.removeClass('hover').on('mouseenter').on('mouseleave');
-            $('a[rel="show-nav"]').on('mouseover');
+            $navTop.removeClass('hover');
             $header.find('.popover').hide();
             SHOWING_TOUR = false;
             return false;
@@ -301,58 +302,87 @@ function runTour() {
         
         function switchReadNav(navItem) {
             SHOWING_TOUR = false;
-            $('.read-nav a[rel="show-nav"]').eq( navItem ).trigger('mouseover');
+            $('.read-nav a[rel="show-nav"]').eq( navItem ).trigger('click');
             SHOWING_TOUR = true;
         }
 
         function wireTip(){
             switch (tipCount++) {
             case 0:
-                // Read Nav > Log 1
+                console.log(0);
+                // Button to show  Read Nav > Log 1
                 $tip = $logNav.find('li.unread a').eq(1);
                 pConfig.content = "<p>When you have something to read today, it's marked in white text.</p><div class='clearfix'><a href='#next' class='btn f-right btn-primary'>Next</a></div>";
-                pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-list'></i> Your Readin' Log <a href='#close'>x</a>";
+                pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-list'></i> Your Readin' Log <a href='#close'><i class='icon-remove'></i></a>";
                 $tip.popover(pConfig);
                 $readNav.addClass('hover');
                 $tip.popover('show');
                 wireTip();
-                if (!isMobile) {
-                    $header.find('.popover').css('top','100px');
-                }
+                wireClose();
                 break;
             case 1:
-                // Read Nav > Log 2
-                pConfig.content = "<p>Text you've already read is in gray.</p><div class='clearfix'><a href='#next' class='btn f-right btn-primary'>Next</a></div>";
-                wireClose();
+                console.log(1);
+                // Button to show Read Nav > Log 2
                 $header.find('.popover-content .btn').on('click',function(e){
                     e.preventDefault();
                     $tip.popover('hide');
                     $tip = $logNav.find('li:not(.unread) a').eq(1);
+                    pConfig.content = "<p>Text you've already read is in gray.</p><div class='clearfix'><a href='#next' class='btn f-right btn-primary'>Next</a></div>";
                     $tip.popover(pConfig).popover('show');
                     wireTip();
+                    wireClose();
                     return false;
                 });
                 break;
             case 2:
-                // Read Nav > Bookmarks
-                pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-bookmark'></i> Your Bookmarks <a href='#close'>x</a>";
-                pConfig.content = "<p>Here's a list of your bookmarked verses. We'll show you how to add bookmarks in a second ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Next</a></div>";
-                wireClose();
+                console.log(2);
+                // Button to show  Read Nav > Bookmarks
                 $header.find('.popover-content .btn').on('click',function(e){
                     e.preventDefault();
                     $tip.popover('hide');
                     switchReadNav(1);
                     $tip = $bookmarkNav.find('a').eq(1);
+                    pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-bookmark'></i> Your Bookmarks <a href='#close'><i class='icon-remove'></i></a>";
+                    pConfig.content = "<p>Here's a list of your bookmarked verses. We'll show you how to add bookmarks in a second. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Next</a></div>";
                     $tip.popover(pConfig).popover('show');
                     wireTip();
+                    wireClose();
                     return false;
                 });
                 break;
             case 3:
-                // TODO
-                wireClose();
+                console.log(3);
+                // Button to show Read Nav > Calendar
+                $header.find('.popover-content .btn').on('click',function(e){
+                    e.preventDefault();
+                    $tip.popover('hide');
+                    switchReadNav(2);
+                    $tip = $planNav.find('li').eq(0);
+                    pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-calendar'></i> Add a Readin' Plan <a href='#close'><i class='icon-remove'></i></a>";
+                    pConfig.content = "<p>Find a readin' plan you want, and press the power icon (<i class='icon-power-off'></i>) to activate it.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Next</a></div>";
+                    $tip.popover(pConfig).popover('show');
+                    wireTip();
+                    wireClose();
+                    return false;
+                });
+                break;
+            case 4: 
+                console.log(4);
+                $header.find('.popover-content .btn').on('click',function(e){
+                    e.preventDefault();
+                    $tip.popover('hide');
+                    $tip = $planNav.find('li').eq(1);
+                    pConfig.content = "<p>Find a readin' plan you want and press the power icon (<i class='icon-power-off'></i>) to activate it</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Next</a></div>";
+                    $tip.popover(pConfig).popover('show');
+                    wireTip();
+                    wireClose();
+                    return false;
+                });
+                break;
+            case 5: 
                 break;
             default:
+                console.log(5);
                 closeTour();
             }
         }

@@ -5,6 +5,7 @@ body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;  font-size: 
 #nav, section { margin:0 auto; }
 h1,h2,h3,h4,h5,h6,body > section b, body > section strong { font-weight: 300; }
 a { color: #08c; }
+a:hover i:before { cursor:pointer; }
 
 /* Utilities */
 .a-center { text-align: center; }
@@ -47,28 +48,39 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub a small { display: block; color: #aaa; line-height: 1.5 ;  }
 #nav .top .sub a small span { color: #ccc; }
 #nav .top .sub li > small { padding:10px 15px 0; font-size: .9em; }
-#nav .top .sub .actions { overflow: hidden; border-bottom: 1px solid #666; border-top: 1px solid #333;  }
-#nav .top .sub .actions a { background-color: #555;  float: left; width: 33.33332%; display: block; padding:0; line-height: 40px; text-align: center; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border:1px solid #333; border-top-color:#666; border-left-color:#666; }
+#nav .top .sub .actions { overflow: hidden; border-bottom: 1px solid #555; border-top: 1px solid #333;  }
+#nav .top .sub .actions a { background-color: #555; float: left; width: 33.33332%; display: block; padding:0; line-height: 40px; text-align: center; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border:1px solid #333; border-top-color:#5c5c5c; border-left-color:#666; }
 #nav .top .sub .actions2 a { width: 49.9998%; }
 #nav .top .sub .actions4 a { width: 24.9998%; }
 #nav .top .sub .actions a.hover,
 #nav .top .sub .actions a:hover { background-color: #444; }
-#nav .top .sub .actions a.hover:hover { cursor:default;}
 #nav .top .sub .actions a:first-child { border-left:0; }
 #nav .top .sub .actions a:last-child { border-right:0; }
 #nav .top .sub .actions a i { margin:0;}
 #nav .top .sub .divider { height: 0px; margin:4px; border-top: 1px solid #333; border-bottom: 1px solid #555;  }
 
 /* Read Nav */
-#nav .read-nav h4 { padding: 5px 15px 0; font-size: 20px; background-color: #333;  line-height: 2; border-bottom: 1px solid #666;  }
+#nav .read-nav h4 { padding: 5px 15px 0; font-size: 20px; background-color: #404040; line-height: 2; border-bottom: 1px solid #555; margin-top: -1px;  }
+#nav .read-nav h5 { padding: 5px 0 0; margin:0 15px 5px; color: #999;  font-size: 16px; background-color: #444; line-height: 1.5; border-bottom: 1px solid #555;  }
 #nav .read-nav h4 i,
 #nav .read-nav .inner-sub > li { display: none; }
 #nav .read-nav .inner-sub > .actions,
 #nav .read-nav .inner-sub > #log { display: inherit; }
-#nav .read-nav .custom { margin-top: 5px; }
+#nav .read-nav .custom { margin: 5px; text-align: center; }
+#nav .read-nav .custom a {  -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; }
 #nav .read-nav #log a { opacity:.55; position: relative; z-index: 10;  }
 #nav .read-nav #log .unread a { opacity: 1; }
 #nav span.date { color: #888; position: absolute; right:15px; top:50%; font-size: 16px; z-index: 15; border-bottom: 1px solid #888; line-height: 20px; margin-top: -11px;  }
+#nav .read-nav #reading_plans li a small,
+#nav .read-nav #reading_plans li a .plan-name { display: block;  width: 85%;  }
+#nav .read-nav #reading_plans li a .edit-actions { position: absolute;  top:7px; right:1%; margin-top: 0; width: 10%; }
+#nav .read-nav #reading_plans li a .edit-actions span { font-size: 16px; padding:3px; display: block; color: #fff; opacity:0; }
+#nav .read-nav #reading_plans li a:hover .edit-actions span { opacity:0.3; }
+#nav .read-nav #reading_plans li.powered a .edit-actions span.power { opacity:0.3;}
+#nav .read-nav #reading_plans li a .edit-actions span:hover { background: none; opacity:1; }
+#nav .read-nav #reading_plans li.powered a:hover .edit-actions span.power { opacity:1;}
+
+
 
 /* Search Nav */
 #nav .search-nav .form-wrap { line-height: 30px; margin:0 5px; padding:0 5px; background-color: #fff;  position: relative; min-height: 40px; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
@@ -106,7 +118,7 @@ body > section > p.lamhebrew { display: inline; }
 .popover { color: #666; font-size: 14px; }
 .popover-title { font-size: 18px; }
 .popover-title a { font-size: 14px; float: right; color: #999; display: block; padding:2px; }
-.popover-title a:hover { color: #111; }
+.popover-title a:hover { color: #333; }
 .popover-content .btn { margin-top: 10px; }
 .popover.top .arrow:after { bottom:2px;}
 .popover.right .arrow:after { left:2px;}
@@ -131,6 +143,14 @@ body > section > p.lamhebrew { display: inline; }
     #nav .top .sub { top:40px; padding-top: 0; left:0; right:0; width: auto; margin-left: 0;   }
     #nav .top .sub .inner-sub { -webkit-border-radius: 0 0 5px 5px; -moz-border-radius: 0 0 5px 5px; border-radius: 0 0 5px 5px; }
     #nav .top .sub .inner-sub:before { display: none; }
+    #nav .read-nav .custom { margin:0;}
+    #nav .read-nav .custom a { padding:15px 0 14px;}
+    #nav .read-nav #reading_plans li a { overflow: hidden; position: relative; }
+    #nav .read-nav #reading_plans li a small,
+    #nav .read-nav #reading_plans li a .plan-name { width: 65%;  }
+    #nav .read-nav #reading_plans li a .edit-actions { position: absolute; width: 25%; right:3%; top:50%; margin-top: -10px; }
+    #nav .read-nav #reading_plans li a .edit-actions span { float: right; display: block; opacity:0.15; font-size: 18px; width: 25%;  }
+    #nav .read-nav #reading_plans li.powered a .edit-actions span.power { opacity:1;}
 }
 @media only screen and (max-width:600px) {
     .modal { margin-left: 0; left:2.5%; width:95%;}
@@ -148,6 +168,14 @@ body > section > p.lamhebrew { display: inline; }
     #nav .top > a span { display: none; }
     body > section { font-size: 18px; line-height: 1.5; }
     #nav, body > section { width: 90%; }
+}
+
+@media only screen and (max-width:400px) {
+    #nav .read-nav #reading_plans li { border-bottom:1px solid #3c3c3c; border-top: 1px solid #4c4c4c; }
+    #nav .read-nav #reading_plans li a small,
+    #nav .read-nav #reading_plans li a .plan-name { width: 85%;  }
+    #nav .read-nav #reading_plans li a .edit-actions { top:7px; right:2%; margin-top: 0; width: 10%;  }
+    #nav .read-nav #reading_plans li a .edit-actions span { float: none; opacity:0.1; font-size: 18px; padding:3px; display: block; }
 }
 /* Retina */
 @media 

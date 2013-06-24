@@ -24,7 +24,6 @@
                                 <a title="Load a Random Chapter" href="#" rel="random"><i class="icon-random icon-large"></i></a>
                             </li>
                             <li id="log">
-                                <h4><i class="icon-list"></i> Your Readin' Log</h4>
                                 <ul>
                                     <li class="unread">
                                         <span class="date">Today</span>
@@ -39,7 +38,6 @@
                                             <small><i class="icon-calendar"></i> [Plan Name]</small>
                                         </a>
                                     </li>
-                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a></li>
                                     <li class="divider"></li>
                                     <li>
                                         <span class="date">June 21</span>
@@ -48,7 +46,6 @@
                                             <small><i class="icon-calendar"></i> [Plan Name]</small>
                                         </a>
                                     </li>
-                                    <li><a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a></li>
                                     <li><a href="#" rel="psg-link" data-psg="Psalm 101">Psalm 101:1-15</a></li>
                                     <li class="divider"></li>
                                     <li>
@@ -64,7 +61,6 @@
                                 </ul>
                             </li>
                             <li id="bookmarks">
-                                <h4><i class="icon-bookmark-empty"></i> Your Bookmarks</h4>
                                 <ul>
                                     <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
                                     <li><a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-bookmark"></i> Psalm 101:1-15</a></li>
@@ -75,28 +71,46 @@
                                 </ul>
                             </li>
                             <li id="reading_plans">
-                                <h4><i class="icon-calendar"></i> Add a Readin' Plan</h4>
                                 <ul>
-                                    <li class="custom"><a href="#"><i class="icon-plus"></i> Make Your Own Readin' Plan</a></li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                    <li class="custom"><a href="#"><i class="icon-plus"></i> Add Custom Readin' Plan</a></li>
+                                    <li class="powered">
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><span class="plan-name"><i class="icon-calendar"></i> [Plan Name]</span>
                                             <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                            <span class="edit-actions">
+                                                <span class="power"><i class="icon-power-off"></i></span>
+                                                <span class="edit"><i class="icon-pencil"></i></span>
+                                                <span class="delete"><i class="icon-remove"></i></span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="powered">
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><span class="plan-name"><i class="icon-calendar"></i> [Plan Name]</span>
+                                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                            <span class="edit-actions">
+                                                <span class="power"><i class="icon-power-off"></i></span>
+                                                <span class="edit"><i class="icon-pencil"></i></span>
+                                                <span class="delete"><i class="icon-remove"></i></span>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><span class="plan-name"><i class="icon-calendar"></i> [Plan Name]</span>
                                             <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                            <span class="edit-actions">
+                                                <span class="power"><i class="icon-power-off"></i></span>
+                                                <span class="edit"><i class="icon-pencil"></i></span>
+                                                <span class="delete"><i class="icon-remove"></i></span>
+                                            </span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
+                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><span class="plan-name"><i class="icon-calendar"></i> [Plan Name]</span>
                                             <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" rel="psg-link" data-psg="Psalm 101"><i class="icon-calendar"></i> [Plan Name]
-                                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id turpis neque, sit amet cursus purus. Aliquam rutrum massa id diam cursus a sagittis mi luctus. </small>
+                                            <span class="edit-actions">
+                                                <span class="power"><i class="icon-power-off"></i></span>
+                                                <span class="edit"><i class="icon-pencil"></i></span>
+                                                <span class="delete"><i class="icon-remove"></i></span>
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -170,9 +184,10 @@
         <div id="intro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="welcome" aria-hidden="true">
             <div class="modal-header">
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button> -->
-                <h3 id="welcome">Some good ol' Bible readin'... made simple. <!-- <small>Not new? <a href="#signin" data-toggle="modal" data-dismiss="modal">Sign in</a></small> --></h3>
+                <h3 id="welcome">Welcome to BibleRead.in! <!-- <small>Not new? <a href="#signin" data-toggle="modal" data-dismiss="modal">Sign in</a></small> --></h3>
             </div>
             <div class="modal-body">
+                <p>Some good ol' Bible readin'... made simple.</p>
                 <p>Want to save your readin' info on this device?</p>
                 <p><small>&nbsp;&nbsp;&nbsp;<i class="icon-angle-right"></i>&nbsp;&nbsp;&nbsp;You can bookmark verses, save notes, keep readin' plans, and a readin' log</small></p>
             </div>
