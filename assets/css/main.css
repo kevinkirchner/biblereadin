@@ -101,10 +101,6 @@ body > section > p.lamhebrew { display: inline; }
 .modal.fade.in { top:20%;}
 /* Intro Styles */
 .modal-header small { float: right; font-size: 12px; margin-right: 20px; line-height: 36px;  }
-.modal-body p { font-size: 14px; }
-.modal-footer p.response { margin: 0; font-size: 12px; text-align: center; }
-.modal-footer p.response a { font-size: 14px; }
-.modal-footer p.response .no { padding-left: 20px; }
 
 
 /* Responsive ============================================= */

@@ -125,6 +125,12 @@ function getURLParameter(name) {
     return false;
 }
 
+function runTour() {
+    $('#quick_tour').joyride({
+        'cookieMonster': false
+    }).joyride();
+}
+
 (function($, window, undefined){
     // Onload
     loadPassage( getURLParameter('psg') || getRandomPassage() );
@@ -148,7 +154,7 @@ function getURLParameter(name) {
     });
     
     // Read Nav
-    $('a[rel="show-nav"]').on('click', function(e){
+    $('a[rel="show-nav"]').on('mouseover', function(e){
         e.preventDefault();
         var el = $(this);
         var navSelector = el.attr('href');
@@ -250,7 +256,9 @@ function getURLParameter(name) {
     // Aplify Stuff
     if (typeof BR != undefined) {
         // Show modal
-        $('#intro').modal('show')
+        $('#intro').modal('show');
+        // TODO add tour popovers
     }
+
     
 })(jQuery, this);

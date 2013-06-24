@@ -164,91 +164,41 @@
         <!-- Peripherals -->
         <aside>
         </aside>
-        
-        <!-- Modals -->
-        <!-- Button to trigger modal -->
-     
+                
         <!-- Modal -->
         <div id="intro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="welcome" aria-hidden="true">
             <div class="modal-header">
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button> -->
-                <h3 id="welcome">Some good ol' Bible readin'... made simple. <small>Not new? <a href="#signin" data-toggle="modal" data-dismiss="modal">Sign in</a></small></h3>
+                <h3 id="welcome">Some good ol' Bible readin'... made simple. <!-- <small>Not new? <a href="#signin" data-toggle="modal" data-dismiss="modal">Sign in</a></small> --></h3>
             </div>
             <div class="modal-body">
                 <p>Want to save your readin' info on this device?</p>
-                <p><small> &nbsp; <i class="icon-long-arrow-up"></i> &nbsp; You can bookmark verses, save notes, keep readin' plans, and a readin' log</small></p>
+                <p><small>&nbsp;&nbsp;&nbsp;<i class="icon-angle-right"></i>&nbsp;&nbsp;&nbsp;You can bookmark verses, save notes, keep readin' plans, and a readin' log</small></p>
             </div>
             <div class="modal-footer">
                 <p class="response">
-                    <span class="yes"><a href="#save_device" data-toggle="modal" data-dismiss="modal" aria-hidden="true">Yes, please!</a> That sounds super convenient.</span> 
-                    <span class="no"><a href="#tour" data-toggle="modal" data-dismiss="modal" aria-hidden="true">No thanks!</a> This device isn't mine :(</span>
-                </p>
-            </div>
-        </div>
-        
-        <div id="save_device" class="modal hide fade">
-            <div class="modal-header">
-                <h3><i>Done!</i></h3>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to use multiple devices?</p>
-            </div>
-            <div class="modal-footer">
-                <p class="response">
-                    <span class="yes"><a href="#signup" data-toggle="modal" data-dismiss="modal" aria-hidden="true">Yes, please!</a> Sounds like a good time.</span> 
-                    <span class="no"><a href="#tour" data-dismiss="modal" aria-hidden="true">No thanks!</a> I'll stick to this one.</span>
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" data-toggle="modal" data-target="#tour">Yes, save data on this device</button>
                 </p>
             </div>
         </div>
 
-        <div id="signup" class="modal hide fade">
+        <div id="tour" class="modal hide fade" aria-hidden="true">
             <div class="modal-header">
-                <h3>Create a username and login: <small>Already have one? <a href="#signin" data-toggle="modal" data-dismiss="modal">Sign in</a></h3>
-            </div>
-            <div class="modal-body">
-                Full Name:<br>
-                Email:<br>
-                Passowrd:
+                <h3>Wanna see how to use bibleread.in?</h3>
             </div>
             <div class="modal-footer">
                 <p class="response">
-                    <span class="no"><a href="#tour" data-dismiss="modal" aria-hidden="true">Cancel</a> </span>
-                    <span class="yes"><a href="#tour" data-toggle="modal" data-dismiss="modal" aria-hidden="true">Create Account</a></span> 
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" data-trigger-tour="tour">Yes, give me a quick tour</button>
                 </p>
             </div>
         </div>
 
-        <div id="signin" class="modal hide fade">
-            <div class="modal-header">
-                <h3>Sign in <small>Don't have a username? <a href="#signup" data-toggle="modal" data-dismiss="modal">Create an account</a></small></h3>
-            </div>
-            <div class="modal-body">
-                Username:<br>
-                Password:
-            </div>
-            <div class="modal-footer">
-                <p class="response">
-                    <span class="yes"><a href="#tour" data-dismiss="modal" aria-hidden="true">Sign In</a></span> 
-                </p>
-            </div>
-        </div>
-
-        <div id="tour" class="modal hide fade">
-            <div class="modal-header">
-                <h3>Wanna see all my features?</h3>
-            </div>
-            <div class="modal-footer">
-                <p class="response">
-                    <span class="yes"><a href="#tour" data-toggle="modal" data-dismiss="modal" aria-hidden="true">Yes, please!</a> Give me a quick tour.</span> 
-                    <span class="no"><a href="#tour" data-dismiss="modal" aria-hidden="true">No thanks!</a> I'll find my way around.</span>
-                </p>
-            </div>
-        </div>
-        
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js" charset="utf-8"></script>
-        <script type="text/javascript" src="/assets/vendor/bootstrap/js/bootstrap.min.js" charset="utf-8"></script>
+        <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+        <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
         <script src="/assets/vendor/amplify/amplify.store.min.js"></script>
-        <script type="text/javascript" src="/assets/js/main.js" charset="utf-8"></script>
+        <script src="/assets/js/main.js"></script>
 
         <script type="text/javascript">
             WebFontConfig = {
