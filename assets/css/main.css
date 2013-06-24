@@ -9,6 +9,8 @@ a { color: #08c; }
 /* Utilities */
 .a-center { text-align: center; }
 .no-display { display: none !important; }
+.f-right { float: right; }
+.f-left { float: left; }
 
 /* Header Nav */
 header { height: 40px; position: relative; color: #fff; margin-bottom: 20px; background-color: #222; z-index: 10; }
@@ -97,11 +99,19 @@ body > section > p.psasuper,
 body > section > p.bodyblock,
 body > section > p.lamhebrew { display: inline; }
 
-/* Modals ============================================= */
+/* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}
 /* Intro Styles */
 .modal-header small { float: right; font-size: 12px; margin-right: 20px; line-height: 36px;  }
-
+.popover { color: #666; font-size: 14px; }
+.popover-title { font-size: 18px; }
+.popover-title a { font-size: 14px; float: right; color: #999; display: block; padding:2px; }
+.popover-title a:hover { color: #111; }
+.popover-content .btn { margin-top: 10px; }
+.popover.top .arrow:after { bottom:2px;}
+.popover.right .arrow:after { left:2px;}
+.popover.bottom .arrow:after { top:2px;}
+.popover.left .arrow:after { right:2px;}
 
 /* Responsive ============================================= */
 @media only screen and (min-width:1200px) {

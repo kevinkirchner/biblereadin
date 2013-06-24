@@ -1,4 +1,5 @@
 var CURRENT_PASSAGE;
+var SHOWING_TOUR = false;
 
 var bible = {
     allBooks: ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Ester","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"],
@@ -18,8 +19,10 @@ var bible = {
 };
 
 function clearStorage(){
-    for (v in amplify.store()) {
-        amplify.store(v,null);
+    if(confirm("Remove all your readin' info?")) {
+        for (v in amplify.store()) {
+            amplify.store(v,null);
+        }
     }
 }
 
@@ -37,7 +40,7 @@ function setCurrentPassage(psg) {
 }
 
 function loadPassage(psg) {
-    // TODO: if passage contains verse, load the chapter and anchor to the verse
+    // TODO: if passage is just a verse, load the entire chapter and anchor to the verse
     setCurrentPassage(psg);
     return $.ajax({
         url: "http://labs.bible.org/api/",
@@ -57,8 +60,6 @@ function getRandomPassage() {
 
 function formatPassage(p) {
     return '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text;
-    
-    // FIXME
 /*
     var txt = p.text;
     // If opening tag, replace with p, span, else, add span
@@ -111,6 +112,7 @@ function displayPassages(passages) {
     attachVerseEvents();
 }
 
+// TODO: add sharin', bookmarkin', and note-takin' functionality
 function attachVerseEvents() {
     $('body > section').click(function(e){
         console.log(e.target);
@@ -138,11 +140,18 @@ function runTour() {
     var BR = amplify.store() || false;
     
     // Navigation ------------------------------------------//
-    var $search = $('#search');
+    var $readNav = $('.read-nav');
+    var $tweakNav = $('.tweak-nav');
+    var $shareNav = $('.share-nav');
     var $searchNav = $('.search-nav');
+    var $search = $('#search');
     var $searchNavIcon = $searchNav.find('> a > i');
+    var $navTop = $('#nav .top');
+    var $header = $('body > header');
+    var isMobile = $navTop.css('position') == 'static';
     
-    $('#nav .top').on('mouseenter', function(){
+    $navTop.on('mouseenter', function(){
+        if (SHOWING_TOUR) return;
         var el = $(this);
         $('#nav .top').trigger('mouseleave');
         el.addClass('hover');
@@ -150,12 +159,13 @@ function runTour() {
             $search.trigger('focus');
         }
     }).on('mouseleave', function(){
+        if (SHOWING_TOUR) return;
         $(this).removeClass('hover');
     });
     
     // Read Nav
-    $('a[rel="show-nav"]').on('mouseover', function(e){
-        e.preventDefault();
+    $('a[rel="show-nav"]').on('mouseover', function(){
+        if (SHOWING_TOUR) return;
         var el = $(this);
         var navSelector = el.attr('href');
         var shownNav = $('.read-nav .inner-sub > li:visible:not(.actions)');
@@ -164,13 +174,13 @@ function runTour() {
             $('.read-nav .hover').removeClass('hover');
             el.addClass('hover')
         }
-        return false;
     })
     
     $('a[rel=random]').on('click',function(e){
         e.preventDefault();
         var psg = getRandomPassage();
         loadPassage( psg );
+        if (SHOWING_TOUR) return;
         $(this).parents('.top').removeClass('hover');
         return false;
     });
@@ -184,6 +194,7 @@ function runTour() {
         $('body').removeClass(lastTheme).addClass( themeColor );
         lastTheme = themeColor;
         amplify.store('theme',themeColor);
+        if (SHOWING_TOUR) return;
         $(this).parents('.top').removeClass('hover');
         return false;
     });
@@ -203,6 +214,7 @@ function runTour() {
         $('body').removeClass(lastFont).addClass( font );
         lastFont = font;
         amplify.store('font',font);
+        if (SHOWING_TOUR) return;
         $(this).parents('.top').removeClass('hover');
         return false;
     });
@@ -256,8 +268,98 @@ function runTour() {
     // Aplify Stuff
     if (typeof BR != undefined) {
         // Show modal
-        $('#intro').modal('show');
-        // TODO add tour popovers
+        // $('#intro').modal('show');
+        
+        SHOWING_TOUR = true;
+        
+        var $tip;
+        var tipCount = 0;
+        var pConfig = {
+            html: true,
+            placement: isMobile ? 'bottom' : 'right',
+            trigger: 'manual',
+            container: 'body > header',
+        };
+        var wireClose = function(){
+            $header.find('.popover-title a').on('click', closeTour);
+        }
+        var closeTour = function(){
+            if (arguments.length) {
+                arguments[0].preventDefault();
+            }
+            $navTop.removeClass('hover').on('mouseenter').on('mouseleave');
+            $('a[rel="show-nav"]').on('mouseover');
+            $header.find('.popover').hide();
+            SHOWING_TOUR = false;
+            return false;
+        }
+        
+        var $logNav = $readNav.find('#log');
+        var $bookmarkNav = $readNav.find('#bookmarks');
+        var $planNav = $readNav.find('#reading_plans');
+
+        
+        function switchReadNav(navItem) {
+            SHOWING_TOUR = false;
+            $('.read-nav a[rel="show-nav"]').eq( navItem ).trigger('mouseover');
+            SHOWING_TOUR = true;
+        }
+
+        function wireTip(){
+            switch (tipCount++) {
+            case 0:
+                // Read Nav > Log 1
+                $tip = $logNav.find('li.unread a').eq(1);
+                pConfig.content = "<p>When you have something to read today, it's marked in white text.</p><div class='clearfix'><a href='#next' class='btn f-right btn-primary'>Next</a></div>";
+                pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-list'></i> Your Readin' Log <a href='#close'>x</a>";
+                $tip.popover(pConfig);
+                $readNav.addClass('hover');
+                $tip.popover('show');
+                wireTip();
+                if (!isMobile) {
+                    $header.find('.popover').css('top','100px');
+                }
+                break;
+            case 1:
+                // Read Nav > Log 2
+                pConfig.content = "<p>Text you've already read is in gray.</p><div class='clearfix'><a href='#next' class='btn f-right btn-primary'>Next</a></div>";
+                wireClose();
+                $header.find('.popover-content .btn').on('click',function(e){
+                    e.preventDefault();
+                    $tip.popover('hide');
+                    $tip = $logNav.find('li:not(.unread) a').eq(1);
+                    $tip.popover(pConfig).popover('show');
+                    wireTip();
+                    return false;
+                });
+                break;
+            case 2:
+                // Read Nav > Bookmarks
+                pConfig.title = "<i class='icon-book'></i> <i class='icon-angle-right'></i> <i class='icon-bookmark'></i> Your Bookmarks <a href='#close'>x</a>";
+                pConfig.content = "<p>Here's a list of your bookmarked verses. We'll show you how to add bookmarks in a second ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Next</a></div>";
+                wireClose();
+                $header.find('.popover-content .btn').on('click',function(e){
+                    e.preventDefault();
+                    $tip.popover('hide');
+                    switchReadNav(1);
+                    $tip = $bookmarkNav.find('a').eq(1);
+                    $tip.popover(pConfig).popover('show');
+                    wireTip();
+                    return false;
+                });
+                break;
+            case 3:
+                // TODO
+                wireClose();
+                break;
+            default:
+                closeTour();
+            }
+        }
+
+        // Start Tour
+        wireTip();
+        
     }
 
     
