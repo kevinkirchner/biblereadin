@@ -48,6 +48,7 @@ $(function(){
             wireClose();
             break;
         case 1:
+            TOUR_STEP = 'log';
             // Button to show  Read Nav > Bookmarks
             $header.find('.popover-content .btn').on('click',function(e){
                 e.preventDefault();
@@ -63,6 +64,7 @@ $(function(){
             });
             break;
         case 2:
+            TOUR_STEP = 'bookmark';
             // Button to show Read Nav > Calendar
             $header.find('.popover-content .btn').on('click',function(e){
                 e.preventDefault();
@@ -78,6 +80,7 @@ $(function(){
             });
             break;
         case 3:
+            TOUR_STEP = 'plans1';
             // Button to show Read Nav > Calendar
             $header.find('.popover-content .btn').on('click',function(e){
                 e.preventDefault();
@@ -92,6 +95,7 @@ $(function(){
             });
             break;
         case 4: 
+            TOUR_STEP = 'plans2';
             $header.find('.popover-content .btn').on('click',function(e){
                 e.preventDefault();
                 $tip.popover('hide');
@@ -99,6 +103,7 @@ $(function(){
                 $readNav.find('.actions a').removeClass('hover');
                 $tip = $readNav.find('.actions a').last().addClass('hover');
                 pConfig.title = "<i class='icon-random'></i> Load random passage <a href='#close'><i class='icon-remove'></i></a>";
+                pConfig.placement = "bottom";
                 var oldTitle = $tip.attr('title');
                 $tip.attr('title', pConfig.title);
                 pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
@@ -111,6 +116,7 @@ $(function(){
             });
             break;
         case 5: 
+            TOUR_STEP = 'random';
             $header.find('.popover-content .btn').on('click',function(e){
                 e.preventDefault();
                 $tip.popover('hide');
@@ -118,7 +124,6 @@ $(function(){
                 $readNav.add($searchNav).toggleClass('hover');
                 pConfig.title = "<i class='icon-search'></i> Searchin' the Bible <a href='#close'><i class='icon-remove'></i></a>";
                 pConfig.content = "<p>Just start typing. You can search for a verse, verses, a chapter, or a combo of the three&mdash;just separate each with a semi-colon (;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                pConfig.placement = "bottom";
                 pConfig.animation = false;
                 $tip.popover(pConfig).popover('show');
                 $search.focus();
@@ -179,10 +184,7 @@ $(function(){
         default:
             closeTour();
         }
+        amplify.store('tour', 'step-'+tipCount);
     }
-
-    $('a[rel="tour"]').on('click', function(){
-        wireTip();
-    });
 
 })(jQuery);

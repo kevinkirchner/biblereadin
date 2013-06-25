@@ -134,6 +134,16 @@ function runTour() {
     }).joyride();
 }
 
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+             .toString(16)
+             .substring(1);
+};
+
+function guid() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+         s4() + '-' + s4() + s4() + s4();
+}
 
 // Onload
 loadPassage( getURLParameter('psg') || getRandomPassage() );
@@ -270,19 +280,29 @@ $('a[rel="psg-link"]').on('click',function(e){
 })
 
 // Aplify Stuff
-if (typeof BR != undefined) {
-    // Show modal
-    $('#intro').modal('show');
+var brCount = 0; 
+for(br in BR) brCount++
+if (!brCount) {
     
+    // Show modal
+    $('#tour').modal('show');
+    
+    var wireTip;
     // load tour.js
     $.ajax({
       url: '/assets/js/tour.js',
       dataType: 'script',
-      cache: true, // otherwise will get fresh copy every page load
-      success: function() {
-          console.log('loaded');
-        // script loaded, do stuff!
-      }
+      cache: true
+    });
+    
+    $('a[rel="tour"]').on('click', function(){
+        amplify.store('uid',guid());
+        wireTip();
+    });
+    
+    $('a[rel="no-tour"]').on('click', function(){
+        amplify.store('uid',guid());
+        amplify.store('tour','declined');
     });
 }
 

@@ -180,30 +180,16 @@
         </aside>
                 
         <!-- Modal -->
-        <div id="intro" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="welcome" aria-hidden="true">
-            <div class="modal-header">
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button> -->
-                <h3 id="welcome">Welcome to <strong>bibleread.in</strong> <em>Just some good ol' Bible readin' made simple</em> <!-- <small>Not new? <a href="#signin" data-toggle="modal" data-dismiss="modal">Sign in</a></small> --></h3>
-            </div>
-            <div class="modal-body">
-                <p>Want to save your readin' info on this device?</p>
-                <p><small>&nbsp;&nbsp;&nbsp;<i class="icon-angle-right"></i>&nbsp;&nbsp;&nbsp;You can bookmark verses, save notes, keep readin' plans, and keep a readin' log</small></p>
-            </div>
-            <div class="modal-footer">
-                <p class="response">
-                    <button class="btn" data-dismiss="modal" data-toggle="modal" data-target="#tour" aria-hidden="true">No Thanks</button>
-                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" data-toggle="modal" data-target="#tour">Yes, save data on this device</button>
-                </p>
-            </div>
-        </div>
-
         <div id="tour" class="modal hide fade" aria-hidden="true">
             <div class="modal-header">
-                <h3>Want to see how to use <strong>bibleread.in</strong>?</h3>
+                <h3>Howdy! <em>It's Bible readin' time.</em></h3>
+            </div>
+            <div class="modal-body">
+                <p><em>Would you like to see how to use <strong>bibleread.in?</strong></em></p>
             </div>
             <div class="modal-footer">
                 <p class="response">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
+                    <a class="btn" rel="no-tour" data-dismiss="modal" aria-hidden="true">No Thanks</a>
                     <a class="btn btn-primary" data-dismiss="modal" aria-hidden="true" rel="tour">Yes, give me a quick tour</a>
                 </p>
             </div>
@@ -220,7 +206,7 @@
             <div class="modal-footer">
                 <p class="response">
                     <span class="f-left">That's all folks! Enjoy your Bible readin' time!</span>
-                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Got it, thanks!</button>
+                    <button class="btn btn-primary" onclick="amplify.store('tour','finished');" data-dismiss="modal" aria-hidden="true">Got it, thanks!</button>
                 </p>
             </div>
         </div>
