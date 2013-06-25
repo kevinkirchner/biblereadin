@@ -134,342 +134,156 @@ function runTour() {
     }).joyride();
 }
 
-(function($, window, undefined){
-    // Onload
-    loadPassage( getURLParameter('psg') || getRandomPassage() );
-    
-    var BR = amplify.store() || false;
-    
-    // Navigation ------------------------------------------//
-    var $readNav = $('.read-nav');
-    var $tweakNav = $('.tweak-nav');
-    var $shareNav = $('.share-nav');
-    var $searchNav = $('.search-nav');
-    var $search = $('#search');
-    var $searchNavIcon = $searchNav.find('> a > i');
-    var $navTop = $('#nav .top');
-    var $header = $('body > header');
-    var isMobile = $navTop.css('position') == 'static';
-    
-    $('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
-    
-    $navTop.on('mouseenter', function(){
-        if (SHOWING_TOUR && TOUR_STEP != 'search') return;
-        var el = $(this);
-        $('#nav .top').trigger('mouseleave');
-        el.addClass('hover');
-        if (el.hasClass('search-nav')) {
-            $search.trigger('focus');
-        }
-    }).on('mouseleave', function(){
-        if (SHOWING_TOUR) return;
-        $(this).removeClass('hover');
-    });
-    
-    // Read Nav
-    $('a[rel="show-nav"]').on('click', function(){
-        if (SHOWING_TOUR) return;
-        var el = $(this);
-        var navSelector = el.attr('href');
-        var shownNav = $('.read-nav .inner-sub > li:visible:not(.actions)');
-        if (navSelector != '#'+shownNav.attr('id')) {
-            $(navSelector).add(shownNav).toggle();
-            $('.read-nav .hover').removeClass('hover');
-            el.addClass('hover')
-        }
-    });
-    
-    $('a[rel=random]').on('click',function(e){
-        e.preventDefault();
-        var psg = getRandomPassage();
-        loadPassage( psg );
-        if (SHOWING_TOUR) return;
-        $(this).parents('.top').removeClass('hover');
-        return false;
-    });
-    
-    // Tweak Nav
-    var lastTheme = 'light';
-    $('.theme-link').on('click', function(e) {
-        e.preventDefault();
-        var el = $(this);
-        var themeColor = el.data('theme-color');
-        $('body').removeClass(lastTheme).addClass( themeColor );
-        lastTheme = themeColor;
-        amplify.store('theme',themeColor);
-        if (SHOWING_TOUR) return;
-        $(this).parents('.top').removeClass('hover');
-        return false;
-    });
-    
-    var savedTheme = BR.theme || 'light';
-    if (savedTheme != 'light') {
-        setTimeout(function(){
-            $('.theme-link[data-theme-color="'+savedTheme+'"]').trigger('click');
-        }, 1000);
+
+// Onload
+loadPassage( getURLParameter('psg') || getRandomPassage() );
+
+var BR = amplify.store() || false;
+
+// Navigation ------------------------------------------//
+var $readNav = $('.read-nav');
+var $tweakNav = $('.tweak-nav');
+var $shareNav = $('.share-nav');
+var $searchNav = $('.search-nav');
+var $search = $('#search');
+var $searchNavIcon = $searchNav.find('> a > i');
+var $navTop = $('#nav .top');
+var $header = $('body > header');
+var IS_MOBILE = $navTop.css('position') == 'static';
+
+$('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
+
+$navTop.on('mouseenter', function(){
+    if (SHOWING_TOUR && TOUR_STEP != 'search') return;
+    var el = $(this);
+    $('#nav .top').trigger('mouseleave');
+    el.addClass('hover');
+    if (el.hasClass('search-nav')) {
+        $search.trigger('focus');
     }
-    
-    var lastFont = 'sans';
-    $('.font-link').on('click', function(e) {
-        e.preventDefault();
-        var el = $(this);
-        var font = el.data('font');
-        $('body').removeClass(lastFont).addClass( font );
-        lastFont = font;
-        amplify.store('font',font);
-        if (SHOWING_TOUR) return;
-        $(this).parents('.top').removeClass('hover');
-        return false;
-    });
-    
-    var savedFont = BR.font || 'sans';
-    if (savedFont != 'sans') {
-        $('.font-link[data-font="'+savedFont+'"]').trigger('click');
+}).on('mouseleave', function(){
+    if (SHOWING_TOUR) return;
+    $(this).removeClass('hover');
+});
+
+// Read Nav
+$('a[rel="show-nav"]').on('click', function(){
+    if (SHOWING_TOUR) return;
+    var el = $(this);
+    var navSelector = el.attr('href');
+    var shownNav = $('.read-nav .inner-sub > li:visible:not(.actions)');
+    if (navSelector != '#'+shownNav.attr('id')) {
+        $(navSelector).add(shownNav).toggle();
+        $('.read-nav .hover').removeClass('hover');
+        el.addClass('hover')
     }
-    
+});
 
-    // Search Nav
-    $search.typeahead({
-        source: bible.allBooks
+$('a[rel=random]').on('click',function(e){
+    e.preventDefault();
+    var psg = getRandomPassage();
+    loadPassage( psg );
+    if (SHOWING_TOUR) return;
+    $(this).parents('.top').removeClass('hover');
+    return false;
+});
+
+// Tweak Nav
+var lastTheme = 'light';
+$('.theme-link').on('click', function(e) {
+    e.preventDefault();
+    var el = $(this);
+    var themeColor = el.data('theme-color');
+    $('body').removeClass(lastTheme).addClass( themeColor );
+    lastTheme = themeColor;
+    amplify.store('theme',themeColor);
+    if (SHOWING_TOUR) return;
+    $(this).parents('.top').removeClass('hover');
+    return false;
+});
+
+var savedTheme = BR.theme || 'light';
+if (savedTheme != 'light') {
+    setTimeout(function(){
+        $('.theme-link[data-theme-color="'+savedTheme+'"]').trigger('click');
+    }, 1000);
+}
+
+var lastFont = 'sans';
+$('.font-link').on('click', function(e) {
+    e.preventDefault();
+    var el = $(this);
+    var font = el.data('font');
+    $('body').removeClass(lastFont).addClass( font );
+    lastFont = font;
+    amplify.store('font',font);
+    if (SHOWING_TOUR) return;
+    $(this).parents('.top').removeClass('hover');
+    return false;
+});
+
+var savedFont = BR.font || 'sans';
+if (savedFont != 'sans') {
+    $('.font-link[data-font="'+savedFont+'"]').trigger('click');
+}
+
+
+// Search Nav
+$search.typeahead({
+    source: bible.allBooks
+});
+
+$('#search_form').on('submit',function(e){
+    if (!SHOWING_TOUR) $searchNav.removeClass('hover');
+    e.preventDefault();
+
+    var $form = $(this);
+    var psg = $search.val();
+    loadPassage( psg ).complete(function(){
+        $search.val('');
     });
-    
-    $('#search_form').on('submit',function(e){
-        if (!SHOWING_TOUR) $searchNav.removeClass('hover');
-        e.preventDefault();
+})
 
-        var $form = $(this);
-        var psg = $search.val();
-        loadPassage( psg ).complete(function(){
-            $search.val('');
-        });
-    })
-    
-    // Show search when start typing
-    // TODO: optimize keycodes - http://stackoverflow.com/questions/7694486/browser-key-code-list
-    $(document).on('keydown',function(e){
-        if (!$searchNav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
-            if (!e.metaKey && !e.ctrlKey && !e.altKey) {
-                console.log('typing');
-                $searchNav.trigger('mouseenter');
-            }
+// Show search when start typing
+// TODO: optimize keycodes - http://stackoverflow.com/questions/7694486/browser-key-code-list
+$(document).on('keydown',function(e){
+    if (!$searchNav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
+        if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+            console.log('typing');
+            $searchNav.trigger('mouseenter');
         }
-        if (e.keyCode == 27) {
-            $searchNav.trigger('mouseleave');
-        }
-    }).on('click',function(e){
-        if ($searchNav.has(e.target).length === 0) $searchNav.trigger('mouseleave');
-    });
-    
-    // Passage Links
-    $('a[rel="psg-link"]').on('click',function(e){
-        e.preventDefault();
-        var el = $(this);
-        if(el.parents('.top').size()) el.parents('.top').removeClass('hover');
-        loadPassage( el.data('psg') );
-        return false;
-    })
-    
-    // Aplify Stuff
-    if (typeof BR != undefined) {
-        // Show modal
-        
-        var $tip;
-        var tipCount = 0;
-        var pConfig = {
-            html: true,
-            placement: isMobile ? 'bottom' : 'right',
-            trigger: 'manual',
-            container: 'body > header',
-        };
-        var wireClose = function(){
-            $header.find('.popover-title a').on('click', closeTour);
-        }
-        var closeTour = function(){
-            if (arguments.length) {
-                arguments[0].preventDefault();
-            }
-            $navTop.removeClass('hover');
-            $header.find('.popover').hide();
-            SHOWING_TOUR = false;
-            $('body').removeClass('showing-tour');
-            return false;
-        }
-        
-        var $logNav = $readNav.find('#log');
-        var $bookmarkNav = $readNav.find('#bookmarks');
-        var $planNav = $readNav.find('#reading_plans');
-        
-        function switchReadNav(navItem) {
-            SHOWING_TOUR = false;
-            $('.read-nav a[rel="show-nav"]').eq( navItem ).trigger('click');
-            SHOWING_TOUR = true;
-        }
-
-        function wireTip(){
-            switch (tipCount++) {
-            case 0:
-                SHOWING_TOUR = true;
-                $('body').addClass('showing-tour');
-                console.log(0);
-                // Button to show  Read Nav > Log 1
-                $tip = $logNav.find('li.unread a').eq(1);
-                pConfig.title = "<i class='icon-list'></i> Your Readin' Log <a href='#close'><i class='icon-remove'></i></a>";
-                pConfig.content = "<p>When you have something to read today, it's marked in <span class='label white'>white text.</span></p><p>&nbsp;</p><p>Passages you've already read are in <span class='label gray'>gray text.</span></p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                $tip.popover(pConfig);
-                $readNav.addClass('hover');
-                $tip.popover('show');
-                wireTip();
-                wireClose();
-                break;
-            case 1:
-                console.log(1);
-                // Button to show  Read Nav > Bookmarks
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    switchReadNav(1);
-                    $tip = $bookmarkNav.find('a').eq(1);
-                    pConfig.title = "<i class='icon-bookmark'></i> Your Bookmarks <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>Here's a list of your bookmarked verses. We'll show you how to add bookmarks in a second. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    $tip.popover(pConfig).popover('show');
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 2:
-                console.log(2);
-                // Button to show Read Nav > Calendar
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    switchReadNav(2);
-                    $tip = $planNav.find('li').eq(1);
-                    pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>Find a readin' plan you want, and press the power icon (<i class='icon-power-off'></i>) to activate it. We've activated the first one for you. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    $tip.popover(pConfig).popover('show');
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 3:
-                console.log(3);
-                // Button to show Read Nav > Calendar
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    $tip = $planNav.find('li').eq(0);
-                    pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>You can even create your own readin' plan!</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    $tip.popover(pConfig).popover('show');
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 4: 
-                console.log(4);
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    $readNav.find('li[id]').hide();
-                    $readNav.find('.actions a').removeClass('hover');
-                    $tip = $readNav.find('.actions a').last().addClass('hover');
-                    pConfig.title = "<i class='icon-random'></i> Load random passage <a href='#close'><i class='icon-remove'></i></a>";
-                    var oldTitle = $tip.attr('title');
-                    $tip.attr('title', pConfig.title);
-                    pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>Click the random button (<i class='icon-random'></i>) to load a random chapter of the Bible to start readin'.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    $tip.popover(pConfig).popover('show');
-                    $tip.attr('title', oldTitle);
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 5: 
-                console.log(5);
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    $tip = $searchNav.find('.sub');
-                    $readNav.add($searchNav).toggleClass('hover');
-                    pConfig.title = "<i class='icon-search'></i> Searchin' the Bible <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>Just start typing. You can search for a verse, verses, a chapter, or a combo of the three&mdash;just separate each with a semi-colon (;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    pConfig.placement = "bottom";
-                    pConfig.animation = false;
-                    $tip.popover(pConfig).popover('show');
-                    $search.focus();
-                    $search.on('keyup', function(){
-                        $tip.popover('show');
-                        tipCount = 6;
-                        wireTip();
-                    })
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 6: 
-                TOUR_STEP = 'search';
-                console.log(6);
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    $tip = $tweakNav.find('.sub');
-                    $searchNav.add($tweakNav).toggleClass('hover');
-                    pConfig.title = "<i class='icon-cog'></i> Tweak <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>Here you can tweak the site's appearance to make it easier on your eyes.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    pConfig.placement = "bottom";
-                    $tip.popover(pConfig).popover('show');
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 7: 
-                TOUR_STEP = 'tweak';
-                console.log(7);
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    $tip = $shareNav.find('.sub');
-                    $tweakNav.add($shareNav).toggleClass('hover');
-                    pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
-                    pConfig.content = "<p>Share what you've been readin', share your feedback, or share some <i class='icon-dollar'></i> to cover web hosting and development costs! </p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    pConfig.placement = "bottom";
-                    $tip.popover(pConfig).popover('show');
-                    wireTip();
-                    wireClose();
-                    return false;
-                });
-                break;
-            case 8: 
-                TOUR_STEP = 'share';
-                console.log(7);
-                $header.find('.popover-content .btn').on('click',function(e){
-                    e.preventDefault();
-                    $tip.popover('hide');
-                    $shareNav.removeClass('hover');
-                    $('#tour_interface').modal({
-                        backdrop: 'static'
-                    });
-                    return false;
-                });
-                break;
-            default:
-                console.log(5);
-                closeTour();
-            }
-        }
-        $('#intro').modal('show');
-        $('a[rel="tour"]').on('click', function(){
-            wireTip();
-        })
-
-        
     }
+    if (e.keyCode == 27) {
+        $searchNav.trigger('mouseleave');
+    }
+}).on('click',function(e){
+    if ($searchNav.has(e.target).length === 0) $searchNav.trigger('mouseleave');
+});
 
+// Passage Links
+$('a[rel="psg-link"]').on('click',function(e){
+    e.preventDefault();
+    var el = $(this);
+    if(el.parents('.top').size()) el.parents('.top').removeClass('hover');
+    loadPassage( el.data('psg') );
+    return false;
+})
+
+// Aplify Stuff
+if (typeof BR != undefined) {
+    // Show modal
+    $('#intro').modal('show');
     
-})(jQuery, this);
+    // load tour.js
+    $.ajax({
+      url: '/assets/js/tour.js',
+      dataType: 'script',
+      cache: true, // otherwise will get fresh copy every page load
+      success: function() {
+          console.log('loaded');
+        // script loaded, do stuff!
+      }
+    });
+}
+
+

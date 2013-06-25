@@ -115,10 +115,11 @@ body > section > p.lamhebrew { display: inline; }
 
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}
-/* Intro Styles */
-.showing-tour .modal-backdrop { opacity:0;}
+.modal-header em {  font-size: 14px; display: block; line-height: 16px; color: #aaa;  }
 .modal-header small { float: right; font-size: 12px; margin-right: 20px; line-height: 36px;  }
 .modal-footer .response span { font-size: 13px; line-height: 30px; }
+/* Intro Styles */
+.showing-tour .modal-backdrop { opacity:0;}
 .popover { color: #666; font-size: 14px; }
 .popover-title { font-size: 18px; }
 .popover-title a { font-size: 14px; float: right; color: #999; display: block; padding:2px; }
