@@ -54,6 +54,8 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .actions4 a { width: 24.9998%; }
 #nav .top .sub .actions a.hover,
 #nav .top .sub .actions a:hover { background-color: #444; }
+.showing-tour #nav .top .sub .actions a:hover { background-color: #555; }
+.showing-tour #nav .top .sub .actions a.hover:hover { background-color: #444; }
 #nav .top .sub .actions a:first-child { border-left:0; }
 #nav .top .sub .actions a:last-child { border-right:0; }
 #nav .top .sub .actions a i { margin:0;}
@@ -114,7 +116,9 @@ body > section > p.lamhebrew { display: inline; }
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}
 /* Intro Styles */
+.showing-tour .modal-backdrop { opacity:0;}
 .modal-header small { float: right; font-size: 12px; margin-right: 20px; line-height: 36px;  }
+.modal-footer .response span { font-size: 13px; line-height: 30px; }
 .popover { color: #666; font-size: 14px; }
 .popover-title { font-size: 18px; }
 .popover-title a { font-size: 14px; float: right; color: #999; display: block; padding:2px; }
@@ -124,6 +128,8 @@ body > section > p.lamhebrew { display: inline; }
 .popover.right .arrow:after { left:2px;}
 .popover.bottom .arrow:after { top:2px;}
 .popover.left .arrow:after { right:2px;}
+.popover .label { background-color: #555; color: #fff; padding:0 6px; display: inline-block;  -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;   }
+.popover .label.gray { color: #aaa; }
 
 /* Responsive ============================================= */
 @media only screen and (min-width:1200px) {
@@ -176,12 +182,6 @@ body > section > p.lamhebrew { display: inline; }
     #nav .read-nav #reading_plans li a .plan-name { width: 85%;  }
     #nav .read-nav #reading_plans li a .edit-actions { top:7px; right:2%; margin-top: 0; width: 10%;  }
     #nav .read-nav #reading_plans li a .edit-actions span { float: none; opacity:0.1; font-size: 18px; padding:3px; display: block; }
-}
-/* Retina */
-@media 
-only screen and (-webkit-min-device-pixel-ratio : 1.5),
-only screen and (min-device-pixel-ratio : 1.5) {
-    
 }
 
 /* Tweaks */

@@ -144,7 +144,6 @@
                                 <a href="#" class="font-link sans" data-font="sans">Aa</a>
                                 <a href="#" class="font-link serif" data-font="serif">Aa</a>
                             </li>
-                            <li><a href="#intro" data-toggle="modal">Take the Tour</a></li>
                         </ul>
                     </div>
                 </li>
@@ -193,7 +192,7 @@
             </div>
             <div class="modal-footer">
                 <p class="response">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
+                    <button class="btn" data-dismiss="modal" data-toggle="modal" data-target="#tour" aria-hidden="true">No Thanks</button>
                     <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" data-toggle="modal" data-target="#tour">Yes, save data on this device</button>
                 </p>
             </div>
@@ -206,7 +205,23 @@
             <div class="modal-footer">
                 <p class="response">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">No Thanks</button>
-                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" data-trigger-tour="tour">Yes, give me a quick tour</button>
+                    <a class="btn btn-primary" data-dismiss="modal" aria-hidden="true" rel="tour">Yes, give me a quick tour</a>
+                </p>
+            </div>
+        </div>
+
+        <div id="tour_interface" class="modal hide fade" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+                <h3>One last thing!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Click a verse to select it and the share button will show on the bottom of the screen. Double click a verse to add notes.</p>
+            </div>
+            <div class="modal-footer">
+                <p class="response">
+                    <span class="f-left">That's all folks! Enjoy your Bible readin' time!</span>
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Got it, thanks!</button>
                 </p>
             </div>
         </div>
