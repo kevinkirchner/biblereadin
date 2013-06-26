@@ -60,20 +60,22 @@ function getRandomPassage() {
 }
 
 function formatPassage(p) {
-    return '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+p.text;
-/*
-    var txt = p.text;
-    // If opening tag, replace with p, span, else, add span
-    var sp = '<span data-psg="'+p.bookname+' '+p.chapter+':'+p.verse+'">';
-    if (txt.indexOf('<p')) {
-        var pos = txt.indexOf('>') + 1;
-        var txt = '</span><!-- closing -->'+txt.substring(0,pos) + sp + txt.substring(pos);
-    } else {
-        txt = sp+txt;
+    
+    var ptext = p.text.replace('">','"><span>');
+    var txt = ptext.replace('</','</span></');
+    // if end tag was replaced, then prepend verse with open span
+    var oSpan = txt!=ptext ? '<span>' : '';
+    // if open tag was replaced, then append verse with closing span
+    var cSpan = ptext!=p.text ? '</span>' : '';
+    // if end AND open tag as replaced, don't do anything
+    if (txt!=ptext && ptext!=p.text) {
+        oSpan = cSpan = '';
+    // if end AND open tag were NOT replaced, wrap the verse in a span
+    } else if (txt == p.text) {
+        oSpan = '<span>';
+        cSpan = '</span>';
     }
-    txt.replace('</p>', '</span></p><span>');
-    return '</span><b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'">'+p.verse+'</b> '+txt+' ';
-*/
+    return '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'" data-bookname="'+p.bookname+'" data-chapter="'+p.chapter+'" data-verse="'+p.verse+'">'+p.verse+'</b> '+oSpan+txt+cSpan+' ';
 }
 
 function displayPassages(passages) {
@@ -87,6 +89,7 @@ function displayPassages(passages) {
         var p = passages[i];
         if (p.bookname != curBook && p.chapter != curChapter) {
             // add heading
+            // TODO: add verse/passage reference if loading specific ones (use CURRENT_PASSAGE)
             txt += '<h2 id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter.toLowerCase()+'">'+p.bookname+' '+p.chapter+'</h2>'
             
             // if title, add it
@@ -116,7 +119,11 @@ function displayPassages(passages) {
 // TODO: add sharin', bookmarkin', and note-takin' functionality
 function attachVerseEvents() {
     $('body > section').click(function(e){
-        console.log(e.target);
+        var span = $(e.target);
+        var b = span.prevAll('b[id]').first();
+        if (!b.size()) b = span.parent().prevAll('b[id]').first();
+        var p = b.data();
+        span.toggleClass('clicked');
     })
 }
 
@@ -128,12 +135,6 @@ function getURLParameter(name) {
     return false;
 }
 
-function runTour() {
-    $('#quick_tour').joyride({
-        'cookieMonster': false
-    }).joyride();
-}
-
 function s4() {
   return Math.floor((1 + Math.random()) * 0x10000)
              .toString(16)
@@ -143,6 +144,17 @@ function s4() {
 function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
          s4() + '-' + s4() + s4() + s4();
+}
+
+function markRead(st){
+    $('body > section b[id]:not([data-read="true"])').each(function(){
+        var el = $(this);
+        if (el.offset().top < st) {
+            el.data('read',true);
+        } else {
+            return;
+        }
+    });
 }
 
 // Onload
@@ -279,7 +291,20 @@ $('a[rel="psg-link"]').on('click',function(e){
     return false;
 })
 
-// Aplify Stuff
+// Marking passages as read
+var scrollDepth = 0;
+var scrollPaused = 0;
+$(window).on('scroll', function(){
+    var w = $(this);
+    var st = w.scrollTop();
+    if (st > scrollDepth) {
+        clearTimeout(scrollPaused);
+        scrollDepth = st;
+        scrollPaused = setTimeout(function(){ markRead(st) }, 500)
+    }
+})
+
+// Stuff for new people
 var brCount = 0; 
 for(br in BR) brCount++
 if (!brCount) {
