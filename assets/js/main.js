@@ -1,3 +1,27 @@
+// this is a small helper extension i stole from
+// http://www.texotela.co.uk/code/jquery/reverse/
+// it merely reverses the order of a jQuery set.
+$.fn.reverse = function() {
+    return this.pushStack(this.get().reverse(), arguments);
+};
+
+// create two new functions: prevALL and nextALL. they're very similar, hence this style.
+$.each( ['prev', 'next'], function(unusedIndex, name) {
+    $.fn[ name + 'ALL' ] = function(matchExpr) {
+        // get all the elements in the body, including the body.
+        var $all = $('body').find('*').andSelf();
+
+        // slice the $all object according to which way we're looking
+        $all = (name == 'prev')
+             ? $all.slice(0, $all.index(this)).reverse()
+             : $all.slice($all.index(this) + 1)
+        ;
+        // filter the matches if specified
+        if (matchExpr) $all = $all.filter(matchExpr);
+        return $all;
+    };
+});
+
 var CURRENT_PASSAGE;
 var SHOWING_TOUR = false;
 var TOUR_STEP = false;
@@ -75,6 +99,7 @@ function formatPassage(p) {
         oSpan = '<span>';
         cSpan = '</span>';
     }
+    // FIXME: Matthew 1:6 doesn't work for some reason
     return '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'" data-bookname="'+p.bookname+'" data-chapter="'+p.chapter+'" data-verse="'+p.verse+'">'+p.verse+'</b> '+oSpan+txt+cSpan+' ';
 }
 
@@ -116,15 +141,16 @@ function displayPassages(passages) {
     attachVerseEvents();
 }
 
-// TODO: add sharin', bookmarkin', and note-takin' functionality
 function attachVerseEvents() {
+    // TODO: add sharin', bookmarkin' ability
     $('body > section').click(function(e){
         var span = $(e.target);
-        var b = span.prevAll('b[id]').first();
-        if (!b.size()) b = span.parent().prevAll('b[id]').first();
+        var b = span.prevALL('b[id]').first();
         var p = b.data();
+        console.log(p);
         span.toggleClass('clicked');
-    })
+    });
+    // TODO: on double click, add note-takin' functionality
 }
 
 function getURLParameter(name) {
