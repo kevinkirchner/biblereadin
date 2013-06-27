@@ -111,7 +111,7 @@ function displayPassages(passages) {
     var plength = passages.length;
     var curBook = '';
     var curChapter = '';
-    var $el = $('<section>');
+    var $el = $('<main>');
     var txt = '';
     for (var i = 0; i < plength; i++) {
         var p = passages[i];
@@ -139,14 +139,14 @@ function displayPassages(passages) {
             txt += formatPassage(p);
         }
     }
-    // Add txt to last section
-    $('body > section').html( txt );
+    // Add txt to last main
+    $('body > main').html( txt );
     attachVerseEvents();
 }
 
 function attachVerseEvents() {
     // TODO: add sharin', bookmarkin' ability
-    $('body > section').click(function(e){
+    $('body > main').click(function(e){
         var span = $(e.target);
         var b = span.prevALL('b[id]').first();
         var p = b.data();
@@ -176,7 +176,7 @@ function guid() {
 }
 
 function markRead(st){
-    $('body > section b[id]:not([data-read="true"])').each(function(){
+    $('body > main b[id]:not([data-read="true"])').each(function(){
         var el = $(this);
         if (el.offset().top < st) {
             el.data('read',true);

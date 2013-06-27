@@ -2,8 +2,8 @@
 * { margin:0; padding:0; }
 html { overflow-y:scroll;}
 body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;  font-size: 16px; line-height: 1.5;  font-family: Helvetica, Arial, sans-serif; font-weight: 300; padding-bottom: 150px;  }
-#nav, section { margin:0 auto; }
-h1,h2,h3,h4,h5,h6,body > section b, body > section strong { font-weight: 300; }
+#nav, main { margin:0 auto; }
+h1,h2,h3,h4,h5,h6,body > main b, body > main strong { font-weight: 300; }
 a { color: #08c; }
 a:hover i:before { cursor:pointer; }
 
@@ -104,17 +104,17 @@ header a { color: #fff; text-decoration: none; display: block; }
 
 /* Content */
 .spacer { height: 2em; line-height: 2em; }
-body > section { text-align: justify; text-justify: newspaper; }
-body > section h2 { margin-top: 30px; }
-body > section b[id] { vertical-align: super; font-size: .7em; position: relative; top: .15em; z-index: 1; }
-body > section span.clicked { border-bottom: 2px dashed rgba(100, 100, 100, 0.5); }
-body > section > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
-body > section > p.bodytext,
-body > section > p.poetry,
-body > section > p.otpoetry,
-body > section > p.psasuper,
-body > section > p.bodyblock,
-body > section > p.lamhebrew { display: inline; }
+body > main { text-align: justify; text-justify: newspaper; }
+body > main h2 { margin-top: 30px; }
+body > main b[id] { vertical-align: super; font-size: .7em; position: relative; top: .15em; z-index: 1; }
+body > main span.clicked { border-bottom: 2px dashed rgba(100, 100, 100, 0.5); }
+body > main > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
+body > main > p.bodytext,
+body > main > p.poetry,
+body > main > p.otpoetry,
+body > main > p.psasuper,
+body > main > p.bodyblock,
+body > main > p.lamhebrew { display: inline; }
 
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}
@@ -137,16 +137,16 @@ body > section > p.lamhebrew { display: inline; }
 
 /* Responsive ============================================= */
 @media only screen and (min-width:1200px) {
-    body > section { font-size:30px; line-height: 1.5; }
-    #nav, body > section { width: 800px; }
+    body > main { font-size:30px; line-height: 1.5; }
+    #nav, body > main { width: 800px; }
 }
 @media only screen and (min-width:800px) and (max-width:1199px) {
-    body > section { font-size: 24px; line-height: 1.5; }
-    #nav, body > section { width: 650px; }
+    body > main { font-size: 24px; line-height: 1.5; }
+    #nav, body > main { width: 650px; }
 }
 @media only screen and (min-width:600px) and (max-width:799px) {
-    body > section { font-size: 22px; line-height: 1.5; }
-    #nav, body > section { width: 500px; }
+    body > main { font-size: 22px; line-height: 1.5; }
+    #nav, body > main { width: 500px; }
 }
 @media only screen and (max-width:799px) {
     #nav .top { position: static; }
@@ -169,15 +169,15 @@ body > section > p.lamhebrew { display: inline; }
     .modal-footer p.response .no { padding-left: 0; margin-top: 10px; }
 }
 @media only screen and (min-width:450px) and (max-width:600px) {
-    body > section { font-size: 20px; line-height: 1.5; }
-    #nav, body > section { width: 85%; }
+    body > main { font-size: 20px; line-height: 1.5; }
+    #nav, body > main { width: 85%; }
 }
 @media only screen and (max-width:449px) {
     #nav .top { width: 23.9%; }
     #nav .top:last-child { float: right; margin-right: 0; }
     #nav .top > a span { display: none; }
-    body > section { font-size: 18px; line-height: 1.5; }
-    #nav, body > section { width: 90%; }
+    body > main { font-size: 18px; line-height: 1.5; }
+    #nav, body > main { width: 90%; }
 }
 
 @media only screen and (max-width:400px) {
@@ -209,9 +209,9 @@ body.dark,
 #nav .top .sub .actions a.dark-link { background-color: #111; color: #666; }
 
 /* Fonts */
-body.serif > section,
+body.serif > main,
 .font-link.serif { font-family: "Droid Serif", "Times New Roman", Times, serif; }
-body.sans > section,
+body.sans > main,
 .font-link.sans { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 
