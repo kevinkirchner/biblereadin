@@ -84,15 +84,18 @@ function getRandomPassage() {
 }
 
 function formatPassage(p) {
-    
+    // optional TODO: put b tags inside of paragraphs and inside spans
+    var closingPos = p.text.indexOf('</');
+    var openingPos = p.text.indexOf('">');
     var ptext = p.text.replace('">','"><span>');
     var txt = ptext.replace('</','</span></');
     // if end tag was replaced, then prepend verse with open span
     var oSpan = txt!=ptext ? '<span>' : '';
     // if open tag was replaced, then append verse with closing span
     var cSpan = ptext!=p.text ? '</span>' : '';
-    // if end AND open tag as replaced, don't do anything
+    // if end AND open tag as replaced AND a closing tag is not before an opening tag, don't do anything
     if (txt!=ptext && ptext!=p.text) {
+    // if (closingPos > -1 && openingPos > -1 && closingPos > openingPos) {
         oSpan = cSpan = '';
     // if end AND open tag were NOT replaced, wrap the verse in a span
     } else if (txt == p.text) {
