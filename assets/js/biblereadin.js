@@ -1,12 +1,12 @@
 var BR;
 var displayPassages;
 var bible = {
-    allBooks: ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Ester","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"],
-    otBooks: ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Ester","Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"],
+    allBooks: ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi","Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"],
+    otBooks: ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy","Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther","Job","Psalms","Proverbs","Ecclesiastes","Song of Songs","Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel","Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"],
     ntBooks: ["Matthew","Mark","Luke","John","Acts","Romans","1 Corinthians","2 Corinthians","Galatians","Ephesians","Philippians","Colossians","1 Thessalonians","2 Thessalonians","1 Timothy","2 Timothy","Titus","Philemon","Hebrews","James","1 Peter","2 Peter","1 John","2 John","3 John","Jude","Revelation"],
     otLaw: ["Genesis","Exodus","Leviticus","Numbers","Deuteronomy"],
-    otHistory: ["Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Ester"],
-    otPoetry: ["Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon"],
+    otHistory: ["Joshua","Judges","Ruth","1 Samuel","2 Samuel","1 Kings","2 Kings","1 Chronicles","2 Chronicles","Ezra","Nehemiah","Esther"],
+    otPoetry: ["Job","Psalms","Proverbs","Ecclesiastes","Song of Songs"],
     otMajor: ["Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel"],
     otMinor: ["Hosea","Joel","Amos","Obadiah","Jonah","Micah","Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"],
     ntGospels: ["Matthew","Mark","Luke","John"],
@@ -45,6 +45,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
 
     BR = {
         _e: {
+            $w: $(window),
             $navTop: $('#nav .top'),
             $header: $('body > header'),
             $main: $('body > main'),
@@ -65,7 +66,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                 $fontLink: $('.font-link')
             },
             share: {
-                $nav: $('.share-nav')
+                $nav: $('.share-nav'),
                 $twitter: $('a.twitter-link'),
                 $facebook: $('a.facebook-link'),
                 $email: $('a.email-link')
@@ -80,7 +81,10 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             lastTheme: 'light',
             savedTheme: 'light',
             lastFont: 'sans',
-            savedFont: 'sans'
+            savedFont: 'sans',
+            scrollPaused: 0,
+            scrollDepth: 0,
+            readOffset: 100
         },
         _s: amplify.store(),
         /**
@@ -91,7 +95,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             var that = this;
 
             // set some flags and other init things
-            that._f.isMobile = that._e.css('position') == 'static';
+            that._f.isMobile = that._e.$navTop.css('position') == 'static';
             that._f.savedTheme = that._s.theme || that._f.savedTheme;
             that._f.savedFont = that._s.font || that._f.savedFont;
             displayPassages = that.displayPassages;
@@ -103,16 +107,28 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             that.attachEvents();
 
             // Show saved tweaks
-            // TODO
+            if (that._s.theme != 'light') {
+                setTimeout(function(){
+                    that._e.tweak.$themeLink.filter('[data-theme-color="'+that._s.theme+'"]').trigger('click');
+                }, 1000);
+            }
+            if (that._s.font != 'sans') {
+                setTimeout(function(){
+                    that._e.tweak.$fontLink.filter('[data-font="'+that._s.font+'"]').trigger('click');
+                }, 1200);
+            }
 
             return that;
         },
         /**
          * == Setting Events Methods ==================================
          */
+        /**
+         * TODO: Mark as read when reaching the bottom of the passage
+         */
         attachEvents: function(){
             var that = this;
-            that.killHashLinkEvent();
+
             that.navHoverEvent();
             that.toggleSubNavEvent();
             that.randomPassageLinkEvent();
@@ -122,12 +138,20 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             that.searchSubmitEvent();
             that.searchInitEvent();
             that.passageLinkEvent();
-            that.markReadOnScrollEvent();
+            that.killHashLinkEvent();
+
+            that._e.$w.on('scroll', function(){
+                var st = that._e.$w.scrollTop();
+                if (st > that._f.scrollDepth) {
+                    clearTimeout(that._f.scrollPaused);
+                    that._f.scrollPaused = setTimeout(function(){ that.markReadOnScrollEvent() }, 500);
+                }
+            });
         },
         navHoverEvent: function(){
             var that = this;
-            that._e.$navTop.('mouseenter', function(){
-                if (SHOWING_TOUR && TOUR_STEP != 'search') return;
+            that._e.$navTop.on('mouseenter', function(){
+                if (that._f.showingTour && that._f.tourStep != 'search') return;
                 var el = $(this);
                 that._e.$navTop.trigger('mouseleave');
                 el.addClass('hover');
@@ -135,7 +159,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                     that._e.search.$input.trigger('focus');
                 }
             }).on('mouseleave', function(){
-                if (SHOWING_TOUR) return;
+                if (that._f.showingTour) return;
                 $(this).removeClass('hover');
             });
         },
@@ -145,7 +169,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                 e.preventDefault();
                 var psg = that.getRandomPassage();
                 that.loadPassage( psg );
-                if (SHOWING_TOUR) return;
+                if (that._f.showingTour) return;
                 $(this).parents('.top').removeClass('hover');
                 return false;
             });
@@ -153,7 +177,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
         toggleSubNavEvent: function(){
             var that = this;
             that._e.$toggleSubNavLinks.on('click', function(){
-                if (SHOWING_TOUR) return;
+                if (that._f.showingTour) return;
                 var el = $(this);
                 var navSelector = el.attr('href');
                 var shownNav = that._e.read.$nav.find('.inner-sub > li:visible:not(.actions)');
@@ -170,10 +194,10 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                 e.preventDefault();
                 var el = $(this);
                 var themeColor = el.data('theme-color');
-                $('body').removeClass(lastTheme).addClass( themeColor );
-                lastTheme = themeColor;
+                $('body').removeClass(that._f.lastTheme).addClass( themeColor );
+                that._f.lastTheme = themeColor;
                 amplify.store('theme',themeColor);
-                if (SHOWING_TOUR) return;
+                if (that._f.showingTour) return;
                 $(this).parents('.top').removeClass('hover');
                 return false;
             });
@@ -184,10 +208,10 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                 e.preventDefault();
                 var el = $(this);
                 var font = el.data('font');
-                $('body').removeClass(lastFont).addClass( font );
-                lastFont = font;
+                $('body').removeClass(that._f.lastFont).addClass( font );
+                that._f.lastFont = font;
                 amplify.store('font',font);
-                if (SHOWING_TOUR) return;
+                if (that._f.showingTour) return;
                 $(this).parents('.top').removeClass('hover');
                 return false;
             });
@@ -201,7 +225,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             var that = this;
             that._e.search.$form.on('submit',function(e){
                 e.preventDefault();
-                if (!SHOWING_TOUR) that._e.search.$nav.removeClass('hover');
+                if (!that._f.showingTour) that._e.search.$nav.removeClass('hover');
                 var psg = that._e.search.$input.val();
                 that.loadPassage( psg ).complete(function(){
                     that._e.search.$input.val('');
@@ -209,16 +233,36 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             })
         },
         searchInitEvent: function(){
-
+            var that = this;
+            that._e.search.$input.typeahead({
+                source: bible.allBooks
+            });
         },
         passageLinkEvent: function(){
-
+            var that = this;
+            that._e.$psgLink.on('click',function(e){
+                e.preventDefault();
+                var el = $(this);
+                if(el.parents('.top').size()) el.parents('.top').removeClass('hover');
+                that.loadPassage( el.data('psg') );
+                return false;
+            })
         },
         markReadOnScrollEvent: function(){
-
+            var that = this;
+            var st = that._e.$w.scrollTop();
+            that._e.$main.find('b[id]:not([data-read="true"])').each(function(){
+                var el = $(this);
+                if (el.offset().top + that._f.readOffset < st) {
+                    that._f.scrollDepth = st;
+                    el.attr('data-read',"true").addClass('read');
+                } else {
+                    return;
+                }
+            });
         },
         killHashLinkEvent: function(){
-
+            $('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
         },
         /**
          * TODO: add sharin' and bookmarkin' ability
@@ -243,11 +287,15 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
          * @returns $.ajax object
          */
         loadPassage: function(psg) {
+            console.log(psg)
+            var that = this;
             return $.ajax({
                 url: "http://labs.bible.org/api/",
                 data: {type:'json', callback: 'displayPassages', formatting:'para', passage: psg },
                 cache: false,
                 dataType: "jsonp"
+            }).success(function(){
+               that._f.currentPassage = psg;
             });
         },
         /**
@@ -256,7 +304,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
          * @param passages
          */
         displayPassages: function(passages){
-            var that = this;
+            var that = BR;
             var plength = passages.length;
             var curBook = '';
             var curChapter = '';
@@ -272,7 +320,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                         txt += '<h4><i>'+p.title+'</i></h4>';
                     }
                     // Add text
-                    txt += formatPassage(p);
+                    txt += that.formatPassage(p);
 
                     curBook = p.bookName;
                     curChapter = p.chapter;
@@ -283,7 +331,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                         txt += '<div class="spacer"></div><h4><i>'+p.title+'</i></h4>';
                     }
                     // Add text
-                    txt += formatPassage(p);
+                    txt += that.formatPassage(p);
                 }
             }
             // Add txt to last main
@@ -360,7 +408,7 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                     amplify.store(v,null);
                 }
             }
-        }
+        },
         /**
          * == Utility Methods ============================================
          */
@@ -400,16 +448,16 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
         _e: {
             modal: {
                 $tour: $('#tour'),
-                $startTourLink: $('a[rel="tour]"'),
+                $startTourLink: $('a[rel="tour"]'),
                 $noTourLink: $('a[rel="no-tour"]')
             }
         },
         init: function(){
-
+            console.log('tour started');
         }
     }
     // If no record of visit, run the tour
-    if (!BR.hasStorage()) {
+    if (!amplify.store('tour')) {
         BR_TOUR.init();
     }
 

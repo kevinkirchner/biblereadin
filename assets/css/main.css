@@ -107,6 +107,8 @@ header a { color: #fff; text-decoration: none; display: block; }
 body > main { text-align: justify; text-justify: newspaper; }
 body > main h2 { margin-top: 30px; }
 body > main b[id] { vertical-align: super; font-size: .7em; position: relative; top: .15em; z-index: 1; }
+body > main b.read { border-bottom: 1px dotted; cursor: pointer; }
+body > main b.read:hover { border-bottom-style: solid; }
 body > main span.clicked { border-bottom: 2px dashed rgba(100, 100, 100, 0.5); }
 body > main > b:before { content:""; display: block; clear: both; margin-top: 1em;  }
 body > main > p.bodytext,
@@ -114,6 +116,7 @@ body > main > p.poetry,
 body > main > p.otpoetry,
 body > main > p.psasuper,
 body > main > p.bodyblock,
+body > main > p.sosspeaker,
 body > main > p.lamhebrew { display: inline; }
 
 /* Modals/Popovers ============================================= */
