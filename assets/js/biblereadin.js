@@ -134,6 +134,7 @@ $.fn.disableSelection = function() {
             that.searchInitEvent();
             that.passageLinkEvent();
             that.killHashLinkEvent();
+            that.watchForTypingEvent();
 
             that._e.$w.on('scroll', function(){
                 var st = that._e.$w.scrollTop();
@@ -258,6 +259,26 @@ $.fn.disableSelection = function() {
         },
         killHashLinkEvent: function(){
             $('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
+        },
+        /**
+         * TODO: optimize keycodes - http://stackoverflow.com/questions/7694486/browser-key-code-list
+         */
+        watchForTypingEvent: function(){
+            var that = this;
+            // Show search when start typing
+            $(document).on('keydown',function(e){
+                if (!that._e.search.$nav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
+                    if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+                        console.log('typing');
+                        that._e.search.$nav.trigger('mouseenter');
+                    }
+                }
+                if (e.keyCode == 27) {
+                    that._e.search.$nav.trigger('mouseleave');
+                }
+            }).on('click',function(e){
+                if (that._e.search.$nav.has(e.target).length === 0) that._e.search.$nav.trigger('mouseleave');
+            });
         },
         /**
          * TODO: add sharin' and bookmarkin' ability
