@@ -17,29 +17,6 @@ var bible = {
     chapterCount: {"Genesis":50,"Exodus":40,"Leviticus":27,"Numbers":36,"Deuteronomy":34,"Joshua":24,"Judges":21,"Ruth":4,"1 Samuel":31,"2 Samuel":24,"1 Kings":22,"2 Kings":25,"1 Chronicles":29,"2 Chronicles":36,"Ezra":10,"Nehemiah":13,"Esther":10,"Job":42,"Psalms":150,"Proverbs":31,"Ecclesiastes":12,"Song of Songs":8,"Isaiah":66,"Jeremiah":52,"Lamentations":5,"Ezekiel":48,"Daniel":12,"Hosea":14,"Joel":3,"Amos":9,"Obadiah":1,"Jonah":4,"Micah":7,"Nahum":3,"Habakkuk":3,"Zephaniah":3,"Haggai":2,"Zechariah":14,"Malachi":4,"Matthew":28,"Mark":16,"Luke":24,"John":21,"Acts":28,"Romans":16,"1 Corinthians":16,"2 Corinthians":13,"Galatians":6,"Ephesians":6,"Philippians":4,"Colossians":4,"1 Thessalonians":5,"2 Thessalonians":3,"1 Timothy":6,"2 Timothy":4,"Titus":3,"Philemon":1,"Hebrews":13,"James":5,"1 Peter":5,"2 Peter":3,"1 John":5,"2 John":1,"3 John":1,"Jude":1,"Revelation": 22}
 };
 
-// this is a small helper extension i stole from
-// http://www.texotela.co.uk/code/jquery/reverse/
-// it merely reverses the order of a jQuery set.
-$.fn.reverse = function() {
-    return this.pushStack(this.get().reverse(), arguments);
-};
-
-// create two new functions: prevALL and nextALL. they're very similar, hence this style.
-$.each( ['prev', 'next'], function(unusedIndex, name) {
-    $.fn[ name + 'ALL' ] = function(matchExpr) {
-        // get all the elements in the body, including the body.
-        var $all = $('body').find('*').andSelf();
-
-        // slice the $all object according to which way we're looking
-        $all = (name == 'prev')
-            ? $all.slice(0, $all.index(this)).reverse()
-            : $all.slice($all.index(this) + 1)
-        ;
-        // filter the matches if specified
-        if (matchExpr) $all = $all.filter(matchExpr);
-        return $all;
-    };
-});
 // prevent selecting text
 $.fn.disableSelection = function() {
     return this
@@ -269,7 +246,7 @@ $.fn.disableSelection = function() {
         markReadOnScrollEvent: function(){
             var that = this;
             var st = that._e.$w.scrollTop();
-            that._e.$main.find('b[id]:not([data-read="true"])').each(function(){
+            that._e.$main.find('span[id]:not([data-read="true"])').each(function(){
                 var el = $(this);
                 if (el.offset().top + that._f.readOffset < st) {
                     that._f.scrollDepth = st;
@@ -288,17 +265,24 @@ $.fn.disableSelection = function() {
          */
         attachVerseEvents: function() {
             var that = this;
-            that._e.$main.on('click',function(e){
-                var span = $(e.target);
-                var b = span.prevALL('b[id]').first();
-                var p = b.data();
-                span.toggleClass('clicked');
-            }).on('dblclick',function(e){
+            that._e.$main.find('span[id]').on('click',function(e){
+                var $span = $(this);
+                $span.toggleClass('clicked');
+            }).on('dblclick',function(){
                 // enable selection
-                var span = $(e.target);
-                var b = span.prevALL('b[id]').first();
-                var p = b.data();
-                span.removeClass('clicked').toggleClass('highlight');
+                var $span = $(this);
+                $span.removeClass('clicked').toggleClass('highlight');
+            });
+
+            $('b.reference').on('click',function(){
+                var $target = $(this);
+                var $span = $target.is('span[id]') ? $target : $target.parent();
+                $span.toggleClass('clicked');
+                if($span.hasClass('read')) {
+                    $span.removeAttr('data-read').removeClass('read');
+                } else {
+                    $span.attr('data-read',"true").addClass('read');
+                }
             });
         },
         /**
@@ -310,7 +294,6 @@ $.fn.disableSelection = function() {
          * @returns $.ajax object
          */
         loadPassage: function(psg) {
-            console.log(psg)
             var that = this;
             return $.ajax({
                 url: "http://labs.bible.org/api/",
@@ -323,7 +306,7 @@ $.fn.disableSelection = function() {
         },
         /**
          * Format the passages that were returned from the API and attach verse events
-         * TODO: add verse/passage reference if loading specific ones (use _f.currentPassage)
+         * TODO: replace heading with verse/passage reference if loading specific ones (use _f.currentPassage)
          * @param passages
          */
         displayPassages: function(passages){
@@ -351,7 +334,7 @@ $.fn.disableSelection = function() {
                     // Add to the passage that already exists
                     // if title, add it
                     if (p.title) {
-                        txt += '<div class="spacer"></div><h4><i>'+p.title+'</i></h4>';
+                        txt += '<h4><i>'+p.title+'</i></h4>';
                     }
                     // Add text
                     txt += that.formatPassage(p);
@@ -363,29 +346,16 @@ $.fn.disableSelection = function() {
         },
         /**
          * add verse numbers and wrap each verse in spans to allow for bookmarkin', sharin', and note takin'
-         * TODO: [Optional] put b tags inside of paragraphs and inside spans
          * @param p
          * @returns {string}
          */
         formatPassage: function(p){
-            var closingPos = p.text.indexOf('</');
-            var openingPos = p.text.indexOf('">');
-            var ptext = p.text.replace('">','"><span>');
-            var txt = ptext.replace('</','</span></');
-            // if end tag was replaced, then prepend verse with open span
-            var oSpan = txt!=ptext ? '<span>' : '';
-            // if open tag was replaced, then append verse with closing span
-            var cSpan = ptext!=p.text ? '</span>' : '';
-            // if end AND open tag as replaced AND a closing tag is not before an opening tag, don't do anything
-            if (txt!=ptext && ptext!=p.text) {
-                // if (closingPos > -1 && openingPos > -1 && closingPos > openingPos) {
-                oSpan = cSpan = '';
-                // if end AND open tag were NOT replaced, wrap the verse in a span
-            } else if (txt == p.text) {
-                oSpan = '<span>';
-                cSpan = '</span>';
-            }
-            return '<b id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'" data-bookname="'+p.bookname+'" data-chapter="'+p.chapter+'" data-verse="'+p.verse+'">'+p.verse+'</b> '+oSpan+txt+cSpan+' ';
+            var that = this;
+            var r = /\<p+[a-zA-Z0-9\=\"\s]+\>/gi;
+            var ptext = p.text.replace(r,'').replace('<p>','')
+            var txt = ptext.replace(/\<\/p\>/gi,'<span class="inner-spacer"/>');
+            var spacer = ptext != txt ? ' class="spacer"' : '';
+            return '<span'+spacer+' id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter+'_'+p.verse+'" data-bookname="'+p.bookname+'" data-chapter="'+p.chapter+'" data-verse="'+p.verse+'"><b class="reference">'+p.verse+'</b> '+txt+'</span> ';
         },
         /**
          * Get a random book and a random chapter from that book
