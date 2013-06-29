@@ -261,15 +261,16 @@ $.fn.disableSelection = function() {
             $('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
         },
         /**
-         * TODO: optimize keycodes - http://stackoverflow.com/questions/7694486/browser-key-code-list
+         * Open search bar when you start typing;
+         * close it when you hit escape key or click outside of it
          */
         watchForTypingEvent: function(){
             var that = this;
+            var disallowedKeys = [27,9,17,18,20,33,34,35,36,224]
             // Show search when start typing
             $(document).on('keydown',function(e){
-                if (!that._e.search.$nav.hasClass('hover') && e.keyCode != 27 && e.keyCode != 9 && e.keyCode != 17 && e.keyCode != 18  && e.keyCode != 20 && e.keyCode != 33 && e.keyCode != 34 && e.keyCode != 35 && e.keyCode != 36 && e.keyCode != 224) {
+                if (!that._e.search.$nav.hasClass('hover') && disallowedKeys.indexOf( e.keyCode) === -1) {
                     if (!e.metaKey && !e.ctrlKey && !e.altKey) {
-                        console.log('typing');
                         that._e.search.$nav.trigger('mouseenter');
                     }
                 }
