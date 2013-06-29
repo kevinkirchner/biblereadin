@@ -118,6 +118,7 @@ body > main > p.psasuper,
 body > main > p.bodyblock,
 body > main > p.sosspeaker,
 body > main > p.lamhebrew { display: inline; }
+body > main .highlight { background-color: rgba(255,175,0,0.1);}
 
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}

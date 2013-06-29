@@ -40,6 +40,13 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
         return $all;
     };
 });
+// prevent selecting text
+$.fn.disableSelection = function() {
+    return this
+        .attr('unselectable', 'on')
+        .css('user-select', 'none')
+        .on('selectstart', false);
+};
 
 (function($,window,document,undefined){
 
@@ -47,13 +54,17 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
         _e: {
             $w: $(window),
             $navTop: $('#nav .top'),
+            $body: $('body'),
             $header: $('body > header'),
             $main: $('body > main'),
             $toggleSubNavLinks: $('a[rel="show-nav"]'),
             $psgLink: $('a[rel="psg-link"]'),
             read: {
                 $nav: $('.read-nav'),
-                $rand: $('a[rel="random"]')
+                $rand: $('a[rel="random"]'),
+                $logNav: $('.read-nav #log'),
+                $bookmarkNav: $('.read-nav #bookmarks'),
+                $planNav: $('.read-nav #reading_plans')
             },
             search: {
                 $nav: $('.search-nav'),
@@ -70,11 +81,16 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                 $twitter: $('a.twitter-link'),
                 $facebook: $('a.facebook-link'),
                 $email: $('a.email-link')
+            },
+            modal: {
+                $tour: $('#tour'),
+                $startTourLink: $('a[rel="tour"]'),
+                $noTourLink: $('a[rel="no-tour"]')
             }
         },
         _f: {
             showingTour: false,
-            tourStep: '',
+            tourStep: amplify.store('tour') || '',
             currentPassage: null,
             hasStorage: null,
             isMobile: false,
@@ -84,7 +100,9 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
             savedFont: 'sans',
             scrollPaused: 0,
             scrollDepth: 0,
-            readOffset: 100
+            readOffset: 100,
+            tipCount:0,
+            tipTotal: 10
         },
         _s: amplify.store(),
         /**
@@ -270,12 +288,17 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
          */
         attachVerseEvents: function() {
             var that = this;
-            that._e.$main.click(function(e){
+            that._e.$main.on('click',function(e){
                 var span = $(e.target);
                 var b = span.prevALL('b[id]').first();
                 var p = b.data();
-                console.log(p);
                 span.toggleClass('clicked');
+            }).on('dblclick',function(e){
+                // enable selection
+                var span = $(e.target);
+                var b = span.prevALL('b[id]').first();
+                var p = b.data();
+                span.removeClass('clicked').toggleClass('highlight');
             });
         },
         /**
@@ -418,6 +441,301 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
                 return decodeURI( reg[1] );
             }
             return false;
+        }
+    };
+
+    // Initialize App
+    BR.init();
+
+
+
+    BR_TOUR = {
+        _e: BR._e,
+        _f: {
+            restart: false
+        },
+        pConfig: {
+            html: true,
+            placement: BR._f.isMobile ? 'bottom' : 'right',
+            trigger: 'manual',
+            container: 'body > header',
+        },
+        init: function(){
+            var that = this;
+            // Prepare first tip
+            that._e.$tip = null;
+            that._e.modal.$tour.modal('show');
+            that.attachModalEvents();
+
+            return that;
+        },
+        restartInit: function(tipCount){
+            var that = this;
+            that._f.restart = true;
+            // Prepare first tip
+            that._e.$tip = null;
+            that._e.modal.$tour.find('.modal-header').html('<h2>Welcome Back</h2>');
+            that._e.modal.$tour.find('.modal-body').html('<p>Would you like to finish your tour?</p>');
+            that._e.modal.$startTourLink.html("Yes, Let's finish the tour!");
+            that._e.modal.$tour.modal('show');
+            BR._f.tipCount = tipCount-1;
+            that.attachModalEvents();
+
+            return that;
+        },
+        attachModalEvents: function(){
+            var that = this;
+            that._e.modal.$startTourLink.on('click', function(){
+                amplify.store('uid',that.guid());
+                BR._f.showingTour = true;
+                that._e.$body.addClass('showing-tour');
+                if(!that._f.restart) {
+                    that.attachTipEvent();
+                } else {
+                    that.runTipSteps();
+                }
+            });
+
+            that._e.modal.$noTourLink.on('click', function(){
+                amplify.store('uid',that.guid());
+                amplify.store('tour','declined');
+            });
+        },
+        attachCloseEvent: function(){
+            var that = this;
+            that._e.$header.find('.popover-title a').on('click', that.closeTour);
+        },
+        closeTour: function(){
+            var that = BR;
+            if (arguments.length) {
+                arguments[0].preventDefault();
+            }
+            that._e.$navTop.removeClass('hover');
+            that._e.$header.find('.popover').hide();
+            that._f.showingTour = false;
+            that._e.$body.removeClass('showing-tour');
+            var stepName = that._f.tipCount+1 == that._f.tipTotal+1 ? 'finished' : 'step-'+(that._f.tipCount+1);
+            amplify.store('tour', stepName);
+            return false;
+        },
+        switchReadNav: function( navItem ){
+            var that = BR;
+            that._f.showingTour = false;
+            that._e.$toggleSubNavLinks.eq( navItem ).trigger('click');
+            that._f.showingTour = true;
+        },
+        attachTipEvent: function(){
+            var that = this;
+            switch (BR._f.tipCount++) {
+                case 0:
+                    that.runTipSteps();
+                    break;
+                case 1:
+                    BR._f.tourStep = 'log';
+                    // Button to show  Read Nav > Bookmarks
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 2:
+                    BR._f.tourStep = 'bookmark';
+                    // Button to show Read Nav > Calendar
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 3:
+                    BR._f.tourStep = 'plans1';
+                    // Button to show Read Nav > Calendar
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 4:
+                    BR._f.tourStep = 'plans2';
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 5:
+                    BR._f.tourStep = 'random';
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 6:
+                    BR._f.tourStep = 'search';
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 7:
+                    BR._f.tourStep = 'tweak';
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 8:
+                    BR._f.tourStep = 'share';
+                    that._e.$body.find('.popover-content .btn').on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                case 9:
+                    BR._f.tourStep = 'verse';
+                    that._e.$body.find('.popover-content .btn').html("That's It!").on('click',function(e){
+                        e.preventDefault();
+                        that._e.$tip.popover('hide');
+                        that.runTipSteps();
+                        return false;
+                    });
+                    break;
+                default:
+                    that.closeTour();
+            }
+            amplify.store('tour', 'step-'+BR._f.tipCount);
+        },
+        runTipSteps: function(){
+            var that = this;
+            switch(BR._f.tipCount-1) {
+                case 0:
+                    // Button to show  Read Nav > Log 1
+                    that._e.$tip = that._e.read.$logNav.find('li.unread a').eq(1);
+                    that.pConfig.title = "<i class='icon-list'></i> Your Readin' Log <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>When you have something to read today, it's marked in <span class='label white'>white text.</span></p><p>&nbsp;</p><p>Passages you've already read are in <span class='label gray'>gray text.</span></p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that._e.$tip.popover(that.pConfig);
+                    that._e.read.$nav.addClass('hover');
+                    that._e.$tip.popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 1:
+                    that._e.read.$nav.addClass('hover');
+                    that.switchReadNav(1);
+                    that._e.$tip = that._e.read.$bookmarkNav.find('a').eq(1);
+                    that.pConfig.title = "<i class='icon-bookmark'></i> Your Bookmarks <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>Here's a list of your bookmarked verses. We'll show you how to add bookmarks in a second. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 2:
+                    that._e.read.$nav.addClass('hover');
+                    that.switchReadNav(2);
+                    that._e.$tip = that._e.read.$planNav.find('li').eq(1);
+                    that.pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>Find a readin' plan you want, and press the power icon (<i class='icon-power-off'></i>) to activate it. We've activated the first one for you. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 3:
+                    that._e.read.$nav.addClass('hover');
+                    that.switchReadNav(2);
+                    that._e.$tip = that._e.read.$planNav.find('li').eq(0);
+                    that.pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>You can even create your own readin' plan!</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 4:
+                    that._e.read.$nav.addClass('hover');
+                    that._e.read.$nav.find('li[id]').hide();
+                    that._e.read.$nav.find('.actions a').removeClass('hover');
+                    that._e.$tip = that._e.read.$nav.find('.actions a').last().addClass('hover');
+                    var oldTitle = that._e.$tip.attr('title');
+                    that.pConfig.title = "<i class='icon-random'></i> Load random passage <a href='#close'><i class='icon-remove'></i></a>";
+                    that._e.$tip.attr('title', that.pConfig.title);
+                    that.pConfig.content = "<p>Click the random button (<i class='icon-random'></i>) to load a random chapter of the Bible to start readin'.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.placement = "bottom";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that._e.$tip.attr('title', oldTitle);
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 5:
+                    that._e.$tip = that._e.search.$nav.find('.sub');
+                    that._e.read.$nav.removeClass('hover');
+                    that._e.search.$nav.addClass('hover');
+                    that.pConfig.title = "<i class='icon-search'></i> Searchin' the Bible <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>Just start typing. You can search for a verse, verses, a chapter, or a combo of the three&mdash;just separate each with a semi-colon (;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.animation = false;
+                    that.pConfig.placement = "bottom";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that._e.search.$input.focus();
+                    that._e.search.$input.on('keyup', function(){
+                        that._e.$tip.popover('show');
+                        that._f.tipCount = 6;
+                        that.attachTipEvent();
+                    })
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 6:
+                    that._e.$tip = that._e.tweak.$nav.find('.sub');
+                    that._e.search.$nav.removeClass('hover');
+                    that._e.tweak.$nav.addClass('hover');
+                    that.pConfig.title = "<i class='icon-cog'></i> Tweak <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>Here you can tweak the site's appearance to make it easier on your eyes.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.animation = true;
+                    that.pConfig.placement = "bottom";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 7:
+                    that._e.$tip = that._e.share.$nav.find('.sub');
+                    that._e.tweak.$nav.removeClass('hover');
+                    that._e.share.$nav.addClass('hover');
+                    that.pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>Share what you've been readin', share your feedback, or share some <i class='icon-dollar'></i> to cover web hosting and development costs! </p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.placement = "bottom";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 8:
+                    that._e.share.$nav.removeClass('hover');
+                    that._e.$tip = that._e.$main.find('b[id]').first().nextALL('span').first();
+                    that.pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
+                    that.pConfig.content = "<p>Click a verse once and a button will show to share or bookmark it. Double click to start taking notes for that verse.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.placement = "bottom";
+                    that._e.$tip.popover(that.pConfig).popover('show');
+                    that.attachTipEvent();
+                    that.attachCloseEvent();
+                    break;
+                case 9:
+                    amplify.store('tour','finished')
+                    that.closeTour();
+                    break;
+                default:
+                    return false;
+            }
         },
         /**
          * Create a string of 4 random alphanumeric characters
@@ -433,32 +751,16 @@ $.each( ['prev', 'next'], function(unusedIndex, name) {
          * @returns {string}
          */
         guid: function(){
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                s4() + '-' + s4() + s4() + s4();
-        }
-
-    };
-
-    // Initialize App
-    BR.init();
-
-
-
-    BR_TOUR = {
-        _e: {
-            modal: {
-                $tour: $('#tour'),
-                $startTourLink: $('a[rel="tour"]'),
-                $noTourLink: $('a[rel="no-tour"]')
-            }
-        },
-        init: function(){
-            console.log('tour started');
+            var that = this;
+            return that.s4() + that.s4() + '-' + that.s4() + '-' + that.s4() + '-' +
+                that.s4() + '-' + that.s4() + that.s4() + that.s4();
         }
     }
     // If no record of visit, run the tour
-    if (!amplify.store('tour')) {
+    if (!BR._s.tour) {
         BR_TOUR.init();
+    } else if(BR._s.tour.indexOf('step-')!==-1) {
+        BR_TOUR.restartInit( BR._s.tour.substring(5) );
     }
 
 })(jQuery,this,document);
