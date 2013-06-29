@@ -244,6 +244,9 @@ $.fn.disableSelection = function() {
                 return false;
             })
         },
+        /**
+         * TODO: store read data and use it on load
+         */
         markReadOnScrollEvent: function(){
             var that = this;
             var st = that._e.$w.scrollTop();
@@ -283,7 +286,8 @@ $.fn.disableSelection = function() {
         },
         /**
          * TODO: add sharin' and bookmarkin' ability
-         * TODO: on double click, add note takin' ability
+         * TODO: add note takin' ability
+         * TODO: store read data and use it on load
          */
         attachVerseEvents: function() {
             var that = this;
@@ -368,6 +372,7 @@ $.fn.disableSelection = function() {
         },
         /**
          * add verse numbers and wrap each verse in spans to allow for bookmarkin', sharin', and note takin'
+         * TODO: use read data to mark verses as read if applicable
          * @param p
          * @returns {string}
          */
