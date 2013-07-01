@@ -548,25 +548,6 @@ $.fn.disableSelection = function() {
                     });
                     break;
                 case 3:
-                    BR._f.tourStep = 'plans1';
-                    // Button to show Read Nav > Calendar
-                    that._e.$body.find('.popover-content .btn').on('click',function(e){
-                        e.preventDefault();
-                        that._e.$tip.popover('hide');
-                        that.runTipSteps();
-                        return false;
-                    });
-                    break;
-                case 4:
-                    BR._f.tourStep = 'plans2';
-                    that._e.$body.find('.popover-content .btn').on('click',function(e){
-                        e.preventDefault();
-                        that._e.$tip.popover('hide');
-                        that.runTipSteps();
-                        return false;
-                    });
-                    break;
-                case 5:
                     BR._f.tourStep = 'random';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -575,7 +556,7 @@ $.fn.disableSelection = function() {
                         return false;
                     });
                     break;
-                case 6:
+                case 4:
                     BR._f.tourStep = 'search';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -584,7 +565,7 @@ $.fn.disableSelection = function() {
                         return false;
                     });
                     break;
-                case 7:
+                case 5:
                     BR._f.tourStep = 'tweak';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -593,7 +574,7 @@ $.fn.disableSelection = function() {
                         return false;
                     });
                     break;
-                case 8:
+                case 6:
                     BR._f.tourStep = 'share';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -602,7 +583,7 @@ $.fn.disableSelection = function() {
                         return false;
                     });
                     break;
-                case 9:
+                case 7:
                     BR._f.tourStep = 'verse';
                     that._e.$body.find('.popover-content .btn').html("That's It!").on('click',function(e){
                         e.preventDefault();
@@ -642,26 +623,6 @@ $.fn.disableSelection = function() {
                     break;
                 case 2:
                     that._e.read.$nav.addClass('hover');
-                    that.switchReadNav(2);
-                    that._e.$tip = that._e.read.$planNav.find('li').eq(1);
-                    that.pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>Find a readin' plan you want, and press the power icon (<i class='icon-power-off'></i>) to activate it. We've activated the first one for you. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    that._e.$tip.popover(that.pConfig).popover('show');
-                    that.attachTipEvent();
-                    that.attachCloseEvent();
-                    break;
-                case 3:
-                    that._e.read.$nav.addClass('hover');
-                    that.switchReadNav(2);
-                    that._e.$tip = that._e.read.$planNav.find('li').eq(0);
-                    that.pConfig.title = "<i class='icon-calendar'></i> Your Readin' Plans <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>You can even create your own readin' plan!</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    that._e.$tip.popover(that.pConfig).popover('show');
-                    that.attachTipEvent();
-                    that.attachCloseEvent();
-                    break;
-                case 4:
-                    that._e.read.$nav.addClass('hover');
                     that._e.read.$nav.find('li[id]').hide();
                     that._e.read.$nav.find('.actions a').removeClass('hover');
                     that._e.$tip = that._e.read.$nav.find('.actions a').last().addClass('hover');
@@ -675,7 +636,7 @@ $.fn.disableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 5:
+                case 3:
                     that._e.$tip = that._e.search.$nav.find('.sub');
                     that._e.read.$nav.removeClass('hover');
                     that._e.search.$nav.addClass('hover');
@@ -693,7 +654,7 @@ $.fn.disableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 6:
+                case 4:
                     that._e.$tip = that._e.tweak.$nav.find('.sub');
                     that._e.search.$nav.removeClass('hover');
                     that._e.tweak.$nav.addClass('hover');
@@ -705,7 +666,7 @@ $.fn.disableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 7:
+                case 5:
                     that._e.$tip = that._e.share.$nav.find('.sub');
                     that._e.tweak.$nav.removeClass('hover');
                     that._e.share.$nav.addClass('hover');
@@ -716,7 +677,7 @@ $.fn.disableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 8:
+                case 6:
                     that._e.share.$nav.removeClass('hover');
                     that._e.$tip = that._e.$main.find('b[id]').first().nextALL('span').first();
                     that.pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
@@ -726,7 +687,7 @@ $.fn.disableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 9:
+                case 7:
                     amplify.store('tour','finished')
                     that.closeTour();
                     break;
