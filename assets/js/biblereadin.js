@@ -718,9 +718,9 @@ $.fn.disableSelection = function() {
                     break;
                 case 8:
                     that._e.share.$nav.removeClass('hover');
-                    that._e.$tip = that._e.$main.find('b[id]').first().nextALL('span').first();
+                    that._e.$tip = that._e.$main.find('span[id]').first();
                     that.pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>Click a verse once and a button will show to share or bookmark it. Double click to start taking notes for that verse.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.content = "<p>Click a verse, and a button will show to share it, bookmark it, or to take notes.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
                     that.pConfig.placement = "bottom";
                     that._e.$tip.popover(that.pConfig).popover('show');
                     that.attachTipEvent();
