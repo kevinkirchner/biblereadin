@@ -24,6 +24,12 @@ $.fn.disableSelection = function() {
         .css('user-select', 'none')
         .on('selectstart', false);
 };
+$.fn.enableSelection = function() {
+    return this
+        .removeAttr('unselectable')
+        .css('user-select', 'auto')
+        .on('selectstart', true);
+};
 
 (function($,window,document,undefined){
 
@@ -148,6 +154,12 @@ $.fn.disableSelection = function() {
                     that._f.scrollPaused = setTimeout(function(){ that.markReadOnScrollEvent() }, 500);
                 }
             });
+
+            $(document).on('keydown',function(e){
+                if(e.shiftKey) that._e.$main.disableSelection();
+            }).on('keyup',function(){
+                that._e.$main.enableSelection();
+            })
         },
         navHoverEvent: function(){
             var that = this;
@@ -290,16 +302,25 @@ $.fn.disableSelection = function() {
             });
         },
         /**
-         * TODO: add sharin' and bookmarkin' ability
-         * TODO: add note takin' ability
          * TODO: store read data and use it on load
          */
         attachVerseEvents: function() {
             var that = this;
             that._e.$main.find('span[id]').on('click',function(e){
                 var $span = $(this);
-                $span.toggleClass('clicked');
-                var $tipSpan = ($span.hasClass('clicked')) ? $span : ($span.prevAll('span.clicked').size() ? $span.prevAll('span.clicked') : $span.nextAll('span.clicked'));
+                var $prevClickedSpans = $span.prevAll('span.clicked');
+                var $nextClickedSpans = $span.nextAll('span.clicked');
+                var isClicked = !$span.hasClass('clicked'); // ! b/c it's toggled a couple lines down
+                var $tipSpan = isClicked ? $span : ($prevClickedSpans.size() ? $prevClickedSpans.first() : $nextClickedSpans.first());
+                if(e.shiftKey) {
+                    if ($prevClickedSpans.size()) $span.prevUntil($prevClickedSpans.first()).addClass('clicked')
+                    if ($nextClickedSpans.size()) $span.nextUntil($nextClickedSpans.first()).addClass('clicked')
+                    $span.addClass('clicked');
+                    $tipSpan = $span;
+                } else {
+                    $span.toggleClass('clicked');
+                }
+                that.hideActiveTip($span);
                 if($tipSpan.size()) {
                     // show popover to share verses
                     var $selectedVerses = that.getSelectedVerses();
@@ -312,16 +333,13 @@ $.fn.disableSelection = function() {
                         html: true,
                         trigger: 'manual',
                         placement: 'bottom',
-                        container: 'body',
-                        title: verseCount+' verse'+(verseCount!=1 ? 's' : '')+' from '+that._f.currentPassage.psg,
-                        content: '<a class="btn btn-danger btn-large"><i class="icon-bookmark"></i></a> <a class="btn btn-large"><i class="icon-file-text-alt"></i> Take Notes</a>'
+                        container: 'body > main',
+                        title: '<span>'+verseCount+' verse'+(verseCount!=1 ? 's' : '')+'</span> <small>from '+that._f.currentPassage.psg+'</small>',
+                        content: '<div class="actions"><a class="btn btn-danger btn-large" rel="bookmark"><i class="icon-bookmark"></i></a> <a class="btn btn-large btn-inverse" rel="notes"><i class="icon-file-text-alt"></i> Take Notes</a></div><a class="btn btn-block" rel="unselect-verses"><i class="icon-remove"></i> Unselect All Verses</a>'
                     };
-                    that._e.$body.find('.popover').fadeOut('fast');
                     $tipSpan.popover(pConfig).popover('show');
                     $('html, body').animate({scrollTop: spanPos }, 500);
                     that.attachVersePopoverEvents();
-                } else {
-                    that._e.$body.find('.popover').fadeOut('fast');
                 }
             });
 
@@ -338,16 +356,40 @@ $.fn.disableSelection = function() {
         },
         getSelectedVerses: function(){
             var that = this;
-            return that._e.$main.find('span[id].clicked');
+            return that._e.$main.find('span.clicked');
         },
+        /**
+         * TODO: finish bookmarks
+         * TODO: finish notes
+         */
         attachVersePopoverEvents: function(){
             var that = this;
-            that._e.$body.find('.popover .btn').on('click', function(e){
+            that._e.$main.find('.popover .btn').on('click', function(e){
                 e.preventDefault();
                 var $btn = $(this);
-                if ($btn.hasClass('btn-danger'))
+                switch ($btn.attr('rel')) {
+                    case 'bookmark':
+                        // FIXME: finish me
+                        break;
+                    case 'notes':
+                        // FIXME: finish me
+                        break;
+                    case 'unselect-verses':
+                        that._e.$main.find('span.clicked').removeClass('clicked');
+                        break;
+                };
+                that.hideActiveTip();
                 return false;
             })
+        },
+        hideActiveTip: function(){
+            var that = this;
+            var $target = arguments.length ? arguments[0] : false;
+            var $popovers = that._e.$body.find('.popover');
+            return $popovers.each(function(){
+                var $el = $(this);
+                if ($el != $target) $el.fadeOut('fast');
+            });
         },
         /**
          * == Passage Methods =================================
