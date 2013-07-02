@@ -112,7 +112,6 @@ body > main span.read b.reference { border-bottom: 1px dotted; }
 body > main span.clicked { border-bottom: 1px solid rgba(100, 100, 100, 0.4); }
 body > main span.spacer:after { content:''; display: block; margin-bottom: 1em; }
 body > main span.inner-spacer { display: block;}
-body > main .highlight { background-color: rgba(255,175,0,0.1);}
 
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}

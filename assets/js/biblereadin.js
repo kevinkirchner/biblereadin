@@ -68,7 +68,12 @@ $.fn.disableSelection = function() {
         _f: {
             showingTour: false,
             tourStep: amplify.store('tour') || '',
-            currentPassage: null,
+            currentPassage: {
+                psg: '',
+                bookname: '',
+                chapter: '',
+                verse: ''
+            },
             hasStorage: null,
             isMobile: false,
             lastTheme: 'light',
@@ -269,7 +274,7 @@ $.fn.disableSelection = function() {
          */
         watchForTypingEvent: function(){
             var that = this;
-            var disallowedKeys = [27,9,17,18,20,33,34,35,36,224]
+            var disallowedKeys = [27,9,16,17,18,20,33,34,35,36,224]
             // Show search when start typing
             $(document).on('keydown',function(e){
                 if (!that._e.search.$nav.hasClass('hover') && disallowedKeys.indexOf( e.keyCode) === -1) {
@@ -294,10 +299,30 @@ $.fn.disableSelection = function() {
             that._e.$main.find('span[id]').on('click',function(e){
                 var $span = $(this);
                 $span.toggleClass('clicked');
-            }).on('dblclick',function(){
-                // enable selection
-                var $span = $(this);
-                $span.removeClass('clicked').toggleClass('highlight');
+                var $tipSpan = ($span.hasClass('clicked')) ? $span : ($span.prevAll('span.clicked').size() ? $span.prevAll('span.clicked') : $span.nextAll('span.clicked'));
+                if($tipSpan.size()) {
+                    // show popover to share verses
+                    var $selectedVerses = that.getSelectedVerses();
+                    var verseCount = $selectedVerses.size();
+                    // use first clicked span unless span is < 100px from the bottom of the page
+                    var topOfNext = $tipSpan.next().size() ? $tipSpan.next().offset().top : $tipSpan.offset().top;
+                    var wh = that._e.$w.height();
+                    var spanPos = topOfNext - wh/2
+                    var pConfig = {
+                        html: true,
+                        trigger: 'manual',
+                        placement: 'bottom',
+                        container: 'body',
+                        title: verseCount+' verse'+(verseCount!=1 ? 's' : '')+' from '+that._f.currentPassage.psg,
+                        content: '<a class="btn btn-danger btn-large"><i class="icon-bookmark"></i></a> <a class="btn btn-large"><i class="icon-file-text-alt"></i> Take Notes</a>'
+                    };
+                    that._e.$body.find('.popover').fadeOut('fast');
+                    $tipSpan.popover(pConfig).popover('show');
+                    $('html, body').animate({scrollTop: spanPos }, 500);
+                    that.attachVersePopoverEvents();
+                } else {
+                    that._e.$body.find('.popover').fadeOut('fast');
+                }
             });
 
             $('b.reference').on('click',function(){
@@ -311,6 +336,19 @@ $.fn.disableSelection = function() {
                 }
             });
         },
+        getSelectedVerses: function(){
+            var that = this;
+            return that._e.$main.find('span[id].clicked');
+        },
+        attachVersePopoverEvents: function(){
+            var that = this;
+            that._e.$body.find('.popover .btn').on('click', function(e){
+                e.preventDefault();
+                var $btn = $(this);
+                if ($btn.hasClass('btn-danger'))
+                return false;
+            })
+        },
         /**
          * == Passage Methods =================================
          */
@@ -321,6 +359,7 @@ $.fn.disableSelection = function() {
          */
         loadPassage: function(psg) {
             var that = this;
+            that._f.currentPassage.psg = psg;
             return $.ajax({
                 url: "http://labs.bible.org/api/",
                 data: {type:'json', callback: 'displayPassages', formatting:'para', passage: psg },
