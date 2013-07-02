@@ -132,6 +132,10 @@ body > main span.inner-spacer { display: block;}
 .popover .label { background-color: #555; color: #fff; padding:0 6px; display: inline-block;  -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px;   }
 .popover .label.gray { color: #aaa; }
 
+/* Verses Popovers */
+body > main .popover .actions { width: 201px; margin:0 auto; }
+body > main .popover .popover-title small { white-space: nowrap; }
+
 /* Responsive ============================================= */
 @media only screen and (min-width:1200px) {
     body > main { font-size:30px; line-height: 1.5; }
