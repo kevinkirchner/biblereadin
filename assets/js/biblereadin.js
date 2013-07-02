@@ -602,9 +602,9 @@ $.fn.disableSelection = function() {
             switch(BR._f.tipCount-1) {
                 case 0:
                     // Button to show  Read Nav > Log 1
-                    that._e.$tip = that._e.read.$logNav.find('li.unread a').eq(1);
+                    that._e.$tip = that._e.read.$logNav.find('li a').eq(1);
                     that.pConfig.title = "<i class='icon-list'></i> Your Readin' Log <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>When you have something to read today, it's marked in <span class='label white'>white text.</span></p><p>&nbsp;</p><p>Passages you've already read are in <span class='label gray'>gray text.</span></p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.content = "<p>Here's a log of all that you've been readin'</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
                     that._e.$tip.popover(that.pConfig);
                     that._e.read.$nav.addClass('hover');
                     that._e.$tip.popover('show');
