@@ -76,9 +76,15 @@ $.fn.enableSelection = function() {
             tourStep: amplify.store('tour') || '',
             currentPassage: {
                 psg: '',
-                bookname: '',
-                chapter: '',
-                verse: ''
+                bookname: [],
+                chapter: [],
+                verse: []
+            },
+            selectedPassage: {
+                psg: '',
+                bookname: [],
+                chapter: [],
+                verse: []
             },
             hasStorage: null,
             isMobile: false,
@@ -254,11 +260,11 @@ $.fn.enableSelection = function() {
         passageLinkEvent: function(){
             var that = this;
             that._e.$psgLink.on('click',function(e){
-                e.preventDefault();
-                var el = $(this);
-                if(el.parents('.top').size()) el.parents('.top').removeClass('hover');
-                that.loadPassage( el.data('psg') );
-                return false;
+                if($('[data-click-priority]').has(e.target).length === 0) {
+                    var el = $(this);
+                    if(el.parents('.top').size()) el.parents('.top').removeClass('hover');
+                    that.loadPassage( el.data('psg') );
+                }
             })
         },
         /**
@@ -307,6 +313,7 @@ $.fn.enableSelection = function() {
         attachVerseEvents: function() {
             var that = this;
             that._e.$main.find('span[id]').on('click',function(e){
+                // handle the display
                 var $span = $(this);
                 var $prevClickedSpans = $span.prevAll('span.clicked');
                 var $nextClickedSpans = $span.nextAll('span.clicked');
@@ -320,6 +327,29 @@ $.fn.enableSelection = function() {
                 } else {
                     $span.toggleClass('clicked');
                 }
+
+                // handle the storage of selected verses
+                // clear last currentPassage
+                that._f.selectedPassage = {
+                    psg: '',
+                    bookname: [],
+                    chapter: [],
+                    verse: []
+                };
+                // Add selected verses to that._f.selectedPassage
+                var $clickedSpans = that._e.$main.find('span.clicked');
+                $clickedSpans.each(function(){
+                    var data = $(this).data();
+                    if(jQuery.inArray(data.bookname, that._f.selectedPassage.bookname) === -1) that._f.selectedPassage.bookname.push( data.bookname );
+                    if(jQuery.inArray(data.chapter, that._f.selectedPassage.chapter) === -1) that._f.selectedPassage.chapter.push( data.chapter );
+                    if(jQuery.inArray(data.verse, that._f.selectedPassage.verse) === -1) that._f.selectedPassage.verse.push( data.verse );
+                });
+                if($clickedSpans.size()){
+                    // Fixme: This works for one bookmark, but not multiple bookmarks
+                    that._f.selectedPassage.firstVerseSelector = '#'+that._f.selectedPassage.bookname[0].toLowerCase().replace(' ','_')+'_'+that._f.selectedPassage.chapter[0]+'_'+that._f.selectedPassage.verse[0]
+                    that._f.selectedPassage.psg = that.getSelectedPassage();
+                }
+                // handle the popover
                 that.hideActiveTip($span);
                 if($tipSpan.size()) {
                     // show popover to share verses
@@ -334,7 +364,7 @@ $.fn.enableSelection = function() {
                         trigger: 'manual',
                         placement: 'bottom',
                         container: 'body > main',
-                        title: '<span>'+verseCount+' verse'+(verseCount!=1 ? 's' : '')+'</span> <small>from '+that._f.currentPassage.psg+'</small>',
+                        title: that._f.selectedPassage.psg,
                         content: '<div class="actions"><a class="btn btn-danger btn-large" rel="bookmark"><i class="icon-bookmark"></i></a> <a class="btn btn-large btn-inverse" rel="notes"><i class="icon-file-text-alt"></i> Take Notes</a></div><a class="btn btn-block" rel="unselect-verses"><i class="icon-remove"></i> Unselect All Verses</a>'
                     };
                     $tipSpan.popover(pConfig).popover('show');
@@ -358,6 +388,46 @@ $.fn.enableSelection = function() {
             var that = this;
             return that._e.$main.find('span.clicked');
         },
+        getSelectedPassage: function(){
+            var that = this;
+            if(that._f.selectedPassage.psg) return that._f.selectedPassage.psg;
+
+            var psg = '';
+            var lastBook = null;
+            jQuery.each(that._f.selectedPassage.bookname, function(i){
+                var currentBook = that._f.selectedPassage.bookname[i];
+                var lastChapter = null;
+                if(lastBook && lastBook != currentBook){
+                    psg += '; '+currentBook;
+                } else {
+                    psg += currentBook;
+                }
+                psg += ' ';
+                var lastChapter = null;
+                jQuery.each(that._f.selectedPassage.chapter, function(j){
+                    var currentChapter = that._f.selectedPassage.chapter[j];
+                    psg += !lastChapter ? currentChapter+':' : '; '+currentChapter+':';
+                    var lastVerse = null;
+                    var contdVerse = false;
+                    jQuery.each(that._f.selectedPassage.verse, function(k){
+                        var currentVerse = that._f.selectedPassage.verse[k];
+                        if(!lastVerse){
+                            psg += currentVerse;
+                        } else if (currentVerse == lastVerse+1) {
+                            contdVerse = true;
+                        } else {
+                            psg += contdVerse ? '-'+lastVerse+','+currentVerse: ','+currentVerse;
+                            contdVerse = false;
+                        }
+                        lastVerse = currentVerse;
+                    });
+                    if(contdVerse) psg+= '-'+lastVerse;
+                    lastChapter = currentChapter;
+                });
+                lastBook = currentBook;
+            });
+            return psg;
+        },
         /**
          * TODO: finish bookmarks
          * TODO: finish notes
@@ -367,9 +437,15 @@ $.fn.enableSelection = function() {
             that._e.$main.find('.popover .btn').on('click', function(e){
                 e.preventDefault();
                 var $btn = $(this);
+                var selectedPsg = that.getSelectedPassage();
+                var currentPsg = that._f.currentPassage.psg;
                 switch ($btn.attr('rel')) {
                     case 'bookmark':
-                        // FIXME: finish me
+                        var bookmarkArr = amplify.store('bookmark') || [];
+                        var bookmarkObj = { title: selectedPsg, link: currentPsg, firstVerseSelector: that._f.selectedPassage.firstVerseSelector };
+                        if (jQuery.inArray(bookmarkObj, bookmarkArr) === -1) bookmarkArr.push(bookmarkObj);
+                        amplify.store( 'bookmark', bookmarkArr );
+                        that._s.bookmark = bookmarkArr;
                         break;
                     case 'notes':
                         // FIXME: finish me
@@ -378,9 +454,17 @@ $.fn.enableSelection = function() {
                         that._e.$main.find('span.clicked').removeClass('clicked');
                         break;
                 };
+                that.loadStoredLists();
                 that.hideActiveTip();
                 return false;
             })
+        },
+        /**
+         * TODO: may have to fix how bookmarks are stored before trying to remove them
+         * @param psg
+         */
+        removeBookmark: function(psg) {
+            console.log('remove '+psg+' plz');
         },
         hideActiveTip: function(){
             var that = this;
@@ -401,14 +485,12 @@ $.fn.enableSelection = function() {
          */
         loadPassage: function(psg) {
             var that = this;
-            that._f.currentPassage.psg = psg;
+            that._f.currentPassage.psg = that.toTitleCase(psg);
             return $.ajax({
                 url: "http://labs.bible.org/api/",
                 data: {type:'json', callback: 'displayPassages', formatting:'para', passage: psg },
                 cache: false,
                 dataType: "jsonp"
-            }).success(function(){
-               that._f.currentPassage = psg;
             });
         },
         /**
@@ -422,6 +504,7 @@ $.fn.enableSelection = function() {
             var curBook = '';
             var curChapter = '';
             var txt = '';
+            BR._f.currentPassage.p = passages;
             for (var i = 0; i < plength; i++) {
                 var p = passages[i];
                 if (p.bookname != curBook && p.chapter != curChapter) {
@@ -493,12 +576,15 @@ $.fn.enableSelection = function() {
          */
         hasStorage: function(){
             var that = this;
-            if (that._f.hasStorage == null) {
+            var hasStorage = false;
+            var args = arguments.length ? amplify.store(arguments[0]) : amplify.store();
+            if (that._f.hasStorage == null || arguments.length) {
                 var i = 0;
-                for(keys in amplify.store()) i++;
-                that._f.hasStorage = i > 0;
+                for(keys in args) i++;
+                hasStorage = i > 0;
             }
-            return that._f.hasStorage;
+            if(!arguments.length) that._f.hasStorage = hasStorage;
+            return hasStorage;
         },
         /**
          * clear the amplify storage
@@ -508,7 +594,33 @@ $.fn.enableSelection = function() {
                 for (v in amplify.store()) {
                     amplify.store(v,null);
                 }
+                window.location.href = "";
             }
+        },
+        loadStoredLists: function(){
+            var that = this;
+            var data = that._s;
+            // Bookmarks -------------- //
+            that._e.read.$bookmarkNav.find('ul.tour-placeholder').remove();
+            if(that.hasStorage('bookmark')) {
+                that._e.read.$bookmarkNav.find('ul.empty-placeholder').remove();
+                var ul = $('<ul/>')
+                jQuery.each(data.bookmark, function(i){
+                    var b = data.bookmark[i];
+                    ul.append('<li><a href="#" rel="psg-link" data-psg="'+b.link+'"><i class="icon-bookmark"></i> '+b.title+' <span class="delete" data-click-priority="1"><i class="icon-remove"></i></span></a></li>');
+                });
+                that._e.read.$bookmarkNav.append(ul);
+                ul.find('.delete').on('click',function(e){
+                    that.removeBookmark( $(this).parent().text() )
+                });
+                that.killHashLinkEvent();
+                that._e.$psgLink = $('a[rel="psg-link"]');
+                that.passageLinkEvent();
+            } else {
+                that._e.read.$bookmarkNav.find('ul.empty-placeholder').show();
+            }
+            // Reading Log ----------------- //
+            // FIXME: finish me plz!!
         },
         /**
          * == Utility Methods ============================================
@@ -519,6 +631,9 @@ $.fn.enableSelection = function() {
                 return decodeURI( reg[1] );
             }
             return false;
+        },
+        toTitleCase: function(str){
+            return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
         }
     };
 
@@ -577,6 +692,7 @@ $.fn.enableSelection = function() {
             that._e.modal.$noTourLink.on('click', function(){
                 amplify.store('uid',that.guid());
                 amplify.store('tour','declined');
+                BR.loadStoredLists();
             });
         },
         attachCloseEvent: function(){
@@ -594,6 +710,9 @@ $.fn.enableSelection = function() {
             that._e.$body.removeClass('showing-tour');
             var stepName = that._f.tipCount+1 == that._f.tipTotal+1 ? 'finished' : 'step-'+(that._f.tipCount+1);
             amplify.store('tour', stepName);
+            if(stepName == 'finished') {
+                BR.loadStoredLists();
+            }
             return false;
         },
         switchReadNav: function( navItem ){
@@ -839,6 +958,8 @@ $.fn.enableSelection = function() {
         BR_TOUR.init();
     } else if(BR._s.tour.indexOf('step-')!==-1) {
         BR_TOUR.restartInit( BR._s.tour.substring(5) );
+    } else {
+        BR.loadStoredLists();
     }
 
 })(jQuery,this,document);

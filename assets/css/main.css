@@ -61,6 +61,10 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .top .sub .actions a i { margin:0;}
 #nav .top .sub .divider { height: 0px; margin:4px; border-top: 1px solid #333; border-bottom: 1px solid #555;  }
 
+#nav .top .sub .empty-placeholder li { padding: 15px; line-height: 20px;}
+#nav .top .sub .empty-placeholder li a.btn-danger { line-height: 20px; padding: 0 9px;}
+#nav .top .sub .empty-placeholder li a.btn-danger:hover { background-color: #BD362F;}
+
 /* Read Nav */
 #nav .read-nav h4 { padding: 5px 15px 0; font-size: 20px; background-color: #404040; line-height: 2; border-bottom: 1px solid #555; margin-top: -1px;  }
 #nav .read-nav h5 { padding: 5px 0 0; margin:0 15px 5px; color: #999;  font-size: 16px; background-color: #444; line-height: 1.5; border-bottom: 1px solid #555;  }
@@ -73,6 +77,9 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .read-nav #log a { opacity:.55; position: relative; z-index: 10;  }
 #nav .read-nav #log .unread a { opacity: 1; }
 #nav span.date { color: #888; position: absolute; right:15px; top:50%; font-size: 16px; z-index: 15; border-bottom: 1px solid #888; line-height: 20px; margin-top: -11px;  }
+#nav .read-nav #bookmarks a > span { float: right; opacity:0;}
+#nav .read-nav #bookmarks a:hover > span { opacity:.3;}
+#nav .read-nav #bookmarks a:hover > span:hover { opacity:1;}
 #nav .read-nav #reading_plans li a small,
 #nav .read-nav #reading_plans li a .plan-name { display: block;  width: 85%;  }
 #nav .read-nav #reading_plans li a .edit-actions { position: absolute;  top:7px; right:1%; margin-top: 0; width: 10%; }
