@@ -738,16 +738,6 @@ $.fn.enableSelection = function() {
                     });
                     break;
                 case 2:
-                    BR._f.tourStep = 'bookmark';
-                    // Button to show Read Nav > Calendar
-                    that._e.$body.find('.popover-content .btn').on('click',function(e){
-                        e.preventDefault();
-                        that._e.$tip.popover('hide');
-                        that.runTipSteps();
-                        return false;
-                    });
-                    break;
-                case 3:
                     BR._f.tourStep = 'random';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -756,7 +746,7 @@ $.fn.enableSelection = function() {
                         return false;
                     });
                     break;
-                case 4:
+                case 3:
                     BR._f.tourStep = 'search';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -765,7 +755,7 @@ $.fn.enableSelection = function() {
                         return false;
                     });
                     break;
-                case 5:
+                case 4:
                     BR._f.tourStep = 'tweak';
                     that._e.$body.find('.popover-content .btn').on('click',function(e){
                         e.preventDefault();
@@ -774,17 +764,8 @@ $.fn.enableSelection = function() {
                         return false;
                     });
                     break;
-                case 6:
+                case 5:
                     BR._f.tourStep = 'share';
-                    that._e.$body.find('.popover-content .btn').on('click',function(e){
-                        e.preventDefault();
-                        that._e.$tip.popover('hide');
-                        that.runTipSteps();
-                        return false;
-                    });
-                    break;
-                case 7:
-                    BR._f.tourStep = 'verse';
                     that._e.$body.find('.popover-content .btn').html("That's It!").on('click',function(e){
                         e.preventDefault();
                         that._e.$tip.popover('hide');
@@ -813,16 +794,6 @@ $.fn.enableSelection = function() {
                     break;
                 case 1:
                     that._e.read.$nav.addClass('hover');
-                    that.switchReadNav(1);
-                    that._e.$tip = that._e.read.$bookmarkNav.find('a').eq(1);
-                    that.pConfig.title = "<i class='icon-bookmark'></i> Your Bookmarks <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>Here's a list of your bookmarked verses. We'll show you how to add bookmarks in a second. ;)</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    that._e.$tip.popover(that.pConfig).popover('show');
-                    that.attachTipEvent();
-                    that.attachCloseEvent();
-                    break;
-                case 2:
-                    that._e.read.$nav.addClass('hover');
                     that._e.read.$nav.find('li[id]').hide();
                     that._e.read.$nav.find('.actions a').removeClass('hover');
                     that._e.$tip = that._e.read.$nav.find('.actions a').last().addClass('hover');
@@ -836,7 +807,7 @@ $.fn.enableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 3:
+                case 2:
                     that._e.$tip = that._e.search.$nav.find('.sub');
                     that._e.read.$nav.removeClass('hover');
                     that._e.search.$nav.addClass('hover');
@@ -854,7 +825,7 @@ $.fn.enableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 4:
+                case 3:
                     that._e.$tip = that._e.tweak.$nav.find('.sub');
                     that._e.search.$nav.removeClass('hover');
                     that._e.tweak.$nav.addClass('hover');
@@ -866,7 +837,7 @@ $.fn.enableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 5:
+                case 4:
                     that._e.$tip = that._e.share.$nav.find('.sub');
                     that._e.tweak.$nav.removeClass('hover');
                     that._e.share.$nav.addClass('hover');
@@ -877,17 +848,7 @@ $.fn.enableSelection = function() {
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
-                case 6:
-                    that._e.share.$nav.removeClass('hover');
-                    that._e.$tip = that._e.$main.find('span[id]').first();
-                    that.pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>Click a verse, and a button will show to share it, bookmark it, or to take notes.</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
-                    that.pConfig.placement = "bottom";
-                    that._e.$tip.popover(that.pConfig).popover('show');
-                    that.attachTipEvent();
-                    that.attachCloseEvent();
-                    break;
-                case 7:
+                case 5:
                     amplify.store('tour','finished')
                     that.closeTour();
                     break;
