@@ -96,7 +96,7 @@ $.fn.enableSelection = function() {
             scrollDepth: 0,
             readOffset: 100,
             tipCount:0,
-            tipTotal: 10
+            tipTotal: 6
         },
         _s: amplify.store(),
         /**
