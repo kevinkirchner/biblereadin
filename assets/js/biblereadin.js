@@ -313,6 +313,7 @@ $.fn.enableSelection = function() {
         attachVerseEvents: function() {
             var that = this;
             that._e.$main.find('span[id]').on('click',function(e){
+                return false;
                 // handle the display
                 var $span = $(this);
                 var $prevClickedSpans = $span.prevAll('span.clicked');
