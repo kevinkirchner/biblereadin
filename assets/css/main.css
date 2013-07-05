@@ -119,6 +119,10 @@ body > main span.read b.reference { border-bottom: 1px dotted; }
 body > main span.clicked { border-bottom: 1px solid rgba(100, 100, 100, 0.4); }
 body > main span.spacer:after { content:''; display: block; margin-bottom: 1em; }
 body > main span.inner-spacer { display: block;}
+body > main > a { float: right; }
+body > main > a i { text-decoration: none !important; margin-right: 3px;}
+body > main > a .icon-ok { display: inline-block;}
+body > main > a.passage-unread .icon-ok { display: none;}
 
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}

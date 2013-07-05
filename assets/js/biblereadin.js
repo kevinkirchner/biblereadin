@@ -93,6 +93,7 @@ $.fn.enableSelection = function() {
             lastFont: 'sans',
             savedFont: 'sans',
             scrollPaused: 0,
+            scrollBottom: 0,
             scrollDepth: 0,
             readOffset: 100,
             tipCount:0,
@@ -155,6 +156,13 @@ $.fn.enableSelection = function() {
 
             that._e.$w.on('scroll', function(){
                 var st = that._e.$w.scrollTop();
+                var wh = that._e.$w.height();
+                var dh = $(document).height();
+                if (st+wh == dh) {
+                    clearTimeout(that._f.scrollBottom);
+                    that._f.scrollBottom = setTimeout(function(){ that.markChapterAsRead(); },2000)
+                    return;
+                }
                 if (st > that._f.scrollDepth) {
                     clearTimeout(that._f.scrollPaused);
                     that._f.scrollPaused = setTimeout(function(){ that.markReadOnScrollEvent() }, 500);
@@ -283,6 +291,74 @@ $.fn.enableSelection = function() {
                 }
             });
         },
+        markChapterAsRead: function(){
+            var that = this;
+            var st = that._e.$w.scrollTop();
+            var wh = that._e.$w.height();
+            var dh = $(document).height();
+            if (st+wh == dh) {
+                that.toggleChapterRead(true)
+            }
+        },
+        toggleChapterRead: function(markRead){
+            var that = this;
+            var curDate = new Date();
+            var curDateFormatted = (curDate.getMonth()+1) + '.' + curDate.getDay() + '.' + curDate.getFullYear();
+            var psg = that._f.currentPassage.psg;
+            var logItem = {
+                psg: psg,
+                logDate: curDateFormatted
+            };
+            var log = that._s.log || [];
+            var logRead = that._s.logRead || [];
+            // Toggle  link label
+            that.toggleReadLink(true);
+
+            // Store/Unstore read chapter
+            if (markRead) {
+                if(jQuery.inArray(psg,logRead) === -1) {
+                    log.push(logItem);
+                    logRead.push(psg);
+                }
+            } else {
+                var psgPos = log.indexOf(logItem);
+                if(psgPos !== -1) log.splice(psgPos,1);
+            }
+            that._s.log = log;
+            that._s.logRead = logRead;
+            amplify.store('log', that._s.log );
+            amplify.store('logRead', that._s.logRead );
+
+            // Update reading log nav
+            that.updateReadingLog();
+        },
+        updateReadingLog: function(){
+            var that = this;
+            var log = that._s.log || [];
+            if(log.length){
+                that._e.read.$logNav.find('.empty-placeholder').addClass('hide');
+                var logList = that._e.read.$logNav.find('log-list');
+                var ul = logList.size() ? logList : $('<ul class="log-list"/>');
+                var lastDate = false;
+                jQuery.each(log, function(i){
+                    var logItem = log[i];
+                    var logDate = lastDate != logItem.logDate ? '<span class="date">' + logItem.logDate + '</span>' : '';
+                    ul.append('<li>'+logDate+'<a href="#" rel="psg-link" data-psg="'+logItem.psg+'">'+logItem.psg+'</a></li>');
+                })
+                if(!logList.size()) that._e.read.$logNav.append(ul);
+            } else {
+                that._e.read.$logNav.find('.empty-placeholder').removeClass('hide');
+            }
+        },
+        toggleReadLink: function(){
+            var that = this;
+            var a = $('a[rel="toggle-read"]');
+            a.toggleClass('passage-unread');
+            var markRead = a.hasClass('passage-unread');
+            var aText = markRead ? a.text().replace('Add','Added') : a.text().replace('Added','Add');
+            if (!arguments.length) that.toggleChapterRead(markRead);
+
+        },
         killHashLinkEvent: function(){
             $('a[href^="#"]').on('click', function(e){ e.preventDefault(); return false; });
         },
@@ -312,6 +388,7 @@ $.fn.enableSelection = function() {
          */
         attachVerseEvents: function() {
             var that = this;
+            that.killHashLinkEvent();
             that._e.$main.find('span[id]').on('click',function(e){
                 // handle the display
                 var $span = $(this);
@@ -383,6 +460,9 @@ $.fn.enableSelection = function() {
                     $span.attr('data-read',"true").addClass('read');
                 }
             });
+
+            // TODO: add toggleRead event to a[rel=toggle-read]
+            $('a[rel="toggle-read"]').on('click',that.toggleReadLink);
         },
         getSelectedVerses: function(){
             var that = this;
@@ -504,10 +584,13 @@ $.fn.enableSelection = function() {
             var curBook = '';
             var curChapter = '';
             var txt = '';
+            var readLink = '';
             BR._f.currentPassage.p = passages;
             for (var i = 0; i < plength; i++) {
                 var p = passages[i];
                 if (p.bookname != curBook && p.chapter != curChapter) {
+                    readLink = '<a class="passage-unread" data-psg="'+p.bookname+' '+p.chapter+'" href="#" rel="toggle-read"pl><i class="icon-ok"></i><span>Add '+p.bookname+' '+p.chapter+' to readin\' log</span></a>';
+                    if (curBook !== '') txt += readLink;
                     // add heading
                     txt += '<h2 id="'+p.bookname.toLowerCase().replace(' ','_')+'_'+p.chapter.toLowerCase()+'">'+p.bookname+' '+p.chapter+'</h2>'
 
@@ -530,6 +613,7 @@ $.fn.enableSelection = function() {
                     txt += that.formatPassage(p);
                 }
             }
+            txt += readLink;
             // Add txt to last main
             that._e.$main.html( txt );
             that.attachVerseEvents();
@@ -600,8 +684,8 @@ $.fn.enableSelection = function() {
         loadStoredLists: function(){
             var that = this;
             var data = that._s;
+            $('.tour-placeholder').remove();
             // Bookmarks -------------- //
-            that._e.read.$bookmarkNav.find('ul.tour-placeholder').remove();
             if(that.hasStorage('bookmark')) {
                 that._e.read.$bookmarkNav.find('ul.empty-placeholder').remove();
                 var ul = $('<ul/>')
@@ -613,14 +697,16 @@ $.fn.enableSelection = function() {
                 ul.find('.delete').on('click',function(e){
                     that.removeBookmark( $(this).parent().text() )
                 });
-                that.killHashLinkEvent();
-                that._e.$psgLink = $('a[rel="psg-link"]');
-                that.passageLinkEvent();
             } else {
                 that._e.read.$bookmarkNav.find('ul.empty-placeholder').show();
             }
             // Reading Log ----------------- //
-            // FIXME: finish me plz!!
+            that.updateReadingLog();
+
+            that.killHashLinkEvent();
+            that._e.$psgLink = $('a[rel="psg-link"]');
+            that.passageLinkEvent();
+
         },
         /**
          * == Utility Methods ============================================
