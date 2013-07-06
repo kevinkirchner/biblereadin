@@ -929,7 +929,7 @@ $.fn.enableSelection = function() {
                     that._e.tweak.$nav.removeClass('hover');
                     that._e.share.$nav.addClass('hover');
                     that.pConfig.title = "<i class='icon-share'></i> Share <a href='#close'><i class='icon-remove'></i></a>";
-                    that.pConfig.content = "<p>Share what you've been readin', share your feedback, or share some <i class='icon-dollar'></i> to cover web hosting and development costs! </p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
+                    that.pConfig.content = "<p>Share what you've been readin' or share your feedback!</p><div class='clearfix'><a href='#next' class='btn btn-small f-right btn-primary'>Got It</a></div>";
                     that.pConfig.placement = "bottom";
                     that._e.$tip.popover(that.pConfig).popover('show');
                     that.attachTipEvent();
