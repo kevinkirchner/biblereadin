@@ -2,7 +2,7 @@
 * { margin:0; padding:0; }
 html { overflow-y:scroll;}
 body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;  font-size: 16px; line-height: 1.5;  font-family: Helvetica, Arial, sans-serif; font-weight: 300; padding-bottom: 150px;  }
-#nav, main { margin:0 auto; }
+#nav, main { margin:0 auto; display:block; }
 h1,h2,h3,h4,h5,h6,body > main b, body > main strong { font-weight: 300; }
 a { color: #08c; }
 a:hover i:before { cursor:pointer; }
