@@ -163,6 +163,7 @@ $.fn.enableSelection = function() {
                     that._f.scrollBottom = setTimeout(function(){ that.markChapterAsRead(); },2000)
                     return;
                 }
+                return;
                 if (st > that._f.scrollDepth) {
                     clearTimeout(that._f.scrollPaused);
                     that._f.scrollPaused = setTimeout(function(){ that.markReadOnScrollEvent() }, 500);
@@ -303,7 +304,7 @@ $.fn.enableSelection = function() {
         toggleChapterRead: function(markRead){
             var that = this;
             var curDate = new Date();
-            var curDateFormatted = (curDate.getMonth()+1) + '.' + curDate.getDay() + '.' + curDate.getFullYear();
+            var curDateFormatted = (curDate.getMonth()+1) + '.' + curDate.getDate() + '.' + (curDate.getFullYear() + '').substr(2);
             var psg = that._f.currentPassage.psg;
             var logItem = {
                 psg: psg,
@@ -312,7 +313,9 @@ $.fn.enableSelection = function() {
             var log = that._s.log || [];
             var logRead = that._s.logRead || [];
             // Toggle  link label
-            that.toggleReadLink(true);
+            if(markRead && $('a[rel="toggle-read"]').hasClass('passage-unread')) {
+                that.toggleReadLink(markRead);
+            }
 
             // Store/Unstore read chapter
             if (markRead) {
@@ -337,13 +340,15 @@ $.fn.enableSelection = function() {
             var log = that._s.log || [];
             if(log.length){
                 that._e.read.$logNav.find('.empty-placeholder').addClass('hide');
-                var logList = that._e.read.$logNav.find('log-list');
+                var logList = that._e.read.$logNav.find('.log-list');
                 var ul = logList.size() ? logList : $('<ul class="log-list"/>');
                 var lastDate = false;
+                ul.html('');
                 jQuery.each(log, function(i){
                     var logItem = log[i];
                     var logDate = lastDate != logItem.logDate ? '<span class="date">' + logItem.logDate + '</span>' : '';
                     ul.append('<li>'+logDate+'<a href="#" rel="psg-link" data-psg="'+logItem.psg+'">'+logItem.psg+'</a></li>');
+                    lastDate = logItem.logDate;
                 })
                 if(!logList.size()) that._e.read.$logNav.append(ul);
             } else {
@@ -355,7 +360,8 @@ $.fn.enableSelection = function() {
             var a = $('a[rel="toggle-read"]');
             a.toggleClass('passage-unread');
             var markRead = a.hasClass('passage-unread');
-            var aText = markRead ? a.text().replace('Add','Added') : a.text().replace('Added','Add');
+            var aText = markRead ? a.text().replace('Added','Add') : a.text().replace('Add','Added');
+            a.find('span').html(aText);
             if (!arguments.length) that.toggleChapterRead(markRead);
 
         },
@@ -452,6 +458,7 @@ $.fn.enableSelection = function() {
             });
 
             $('b.reference').on('click',function(){
+                return;
                 var $target = $(this);
                 var $span = $target.is('span[id]') ? $target : $target.parent();
                 $span.toggleClass('clicked');
@@ -461,9 +468,6 @@ $.fn.enableSelection = function() {
                     $span.attr('data-read',"true").addClass('read');
                 }
             });
-
-            // TODO: add toggleRead event to a[rel=toggle-read]
-            $('a[rel="toggle-read"]').on('click',that.toggleReadLink);
         },
         getSelectedVerses: function(){
             var that = this;
