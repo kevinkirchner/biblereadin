@@ -76,7 +76,7 @@ header a { color: #fff; text-decoration: none; display: block; }
 #nav .read-nav .custom a {  -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; }
 #nav .read-nav #log a { opacity:.55; position: relative; z-index: 10;  }
 #nav .read-nav #log .unread a { opacity: 1; }
-#nav span.date { color: #888; position: absolute; right:15px; top:50%; font-size: 16px; z-index: 15; border-bottom: 1px solid #888; line-height: 20px; margin-top: -11px;  }
+#nav span.date { color: #777; position: absolute; right:8px; top:50%; font-size: 14px; z-index: 15; display: block; line-height: 20px; padding:0 5px; border-radius:3px; margin-top: -10px; }
 #nav .read-nav #bookmarks a > span { float: right; opacity:0;}
 #nav .read-nav #bookmarks a:hover > span { opacity:.3;}
 #nav .read-nav #bookmarks a:hover > span:hover { opacity:1;}
@@ -119,10 +119,11 @@ body > main span.read b.reference { border-bottom: 1px dotted; }
 body > main span.clicked { border-bottom: 1px solid rgba(100, 100, 100, 0.4); }
 body > main span.spacer:after { content:''; display: block; margin-bottom: 1em; }
 body > main span.inner-spacer { display: block;}
-body > main > a { float: right; }
-body > main > a i { text-decoration: none !important; margin-right: 3px;}
-body > main > a .icon-ok { display: inline-block;}
-body > main > a.passage-unread .icon-ok { display: none;}
+body > main a[rel="toggle-read"] { float: right; cursor: default; color: #666; text-decoration: none; opacity: 0.5; transition: opacity .4s ease; -moz-transition: opacity .4s ease; -webkit-transition: opacity .4s ease;}
+body > main a[rel="toggle-read"] i { text-decoration: none !important; margin-right: 3px;}
+body > main a[rel="toggle-read"] .icon-ok { display: inline-block;}
+body > main a[rel="toggle-read"].passage-unread { opacity: 0;}
+body > main a[rel="toggle-read"].passage-unread .icon-ok { display: none;}
 
 /* Modals/Popovers ============================================= */
 .modal.fade.in { top:20%;}
