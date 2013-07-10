@@ -910,7 +910,7 @@ $.fn.enableSelection = function() {
                     that._e.$tip.popover(that.pConfig).popover('show');
                     that._e.search.$input.focus();
                     that._e.search.$input.on('keyup', function(){
-                        if (that._f.showingTour) {
+                        if (BR._f.showingTour) {
                             that._e.$tip.popover('show');
                             that._e.$body.find('.popover-content .btn').on('click',function(e){
                                 e.preventDefault();
