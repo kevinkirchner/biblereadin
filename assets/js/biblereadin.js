@@ -798,7 +798,7 @@ $.fn.enableSelection = function() {
             that._e.$header.find('.popover').hide();
             that._f.showingTour = false;
             that._e.$body.removeClass('showing-tour');
-            that._e.search.$input.off('keyup');
+            // that._e.search.$input.off('keyup');
             var stepName = that._f.tipCount+1 == that._f.tipTotal+1 ? 'finished' : 'step-'+(that._f.tipCount+1);
             amplify.store('tour', stepName);
             if(stepName == 'finished') {
