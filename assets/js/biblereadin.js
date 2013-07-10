@@ -977,10 +977,16 @@ $.fn.enableSelection = function() {
                     that._e.$tip.popover(that.pConfig).popover('show');
                     that._e.search.$input.focus();
                     that._e.search.$input.on('keyup', function(){
-                        that._e.$tip.popover('show');
-                        that._f.tipCount = 6;
-                        that.attachTipEvent();
-                    })
+                        if (that._f.showingTour) {
+                            that._e.$tip.popover('show');
+                            that._e.$body.find('.popover-content .btn').on('click',function(e){
+                                e.preventDefault();
+                                that._e.$tip.popover('hide');
+                                that.runTipSteps();
+                                return false;
+                            });
+                        }
+                    });
                     that.attachTipEvent();
                     that.attachCloseEvent();
                     break;
