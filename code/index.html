@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>It's (code) Bible readin' time</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <style>
+        </style>
+    </head>
+    <body>
+        <div class="container">
+          <section id="intro">
+            <h1>&lt;Scripture in code/&gt;</h1>
+            <p>A funny way to meditate on scripture&mdash;by writing verses in javascript/coffeescript.</p>
+            <h3>Submit your Scripture in code</h3>
+            <p>
+              Send your submissions to <a href="mailto:hello@kevnk.com">hello@kevnk.com</a> with:
+              <ul>
+                <li>The jsbin link</li>
+                <li>Your name (optional)</li>
+                <li>Your website (optional)</li>
+              </ul>
+            </p>
+          </section>
+          <section id="code">
+            <hr>
+            <a class="jsbin-embed" href="http://jsbin.com/kepub/2/embed?js">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+            <a class="btn btn-primary btn-reveal">Show/Hide Scripture Reference</a> &nbsp;&nbsp; <a class="ref hidden" target="_blank">John 3:16</a>
+            <hr>
+          </section>
+        </div>
+
+    </body>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+      (function($, window){
+        baseUrl = 'http://bibleread.in/?psg='
+        $('.btn-reveal').on('click',function(){
+          $ref = $(this).nextAll('a').first()
+          $ref.toggleClass('hidden').attr('href', baseUrl + encodeURIComponent($ref.html()))
+        })
+      })(jQuery, this)
+    </script>
+</html>
