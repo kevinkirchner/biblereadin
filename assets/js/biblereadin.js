@@ -183,14 +183,14 @@ $.fn.enableSelection = function() {
                 el.addClass('hover');
             }
 
-            that._e.$navTop.on('mouseenter', function(){
+            that._e.$navTop.on('mouseenter', function(e){
                 if (that._f.showingTour && that._f.tourStep != 'search') return;
                 var el = $(this);
                 showSubNav(el);
                 if (el.hasClass('search-nav')) {
                     that._e.search.$input.trigger('focus');
                 }
-            }).on('mouseleave', function(){
+            }).on('mouseleave', function(e){
                 if (that._f.showingTour) return;
                 $(this).removeClass('hover');
             });
@@ -198,7 +198,7 @@ $.fn.enableSelection = function() {
             that._e.search.$nav.off('mouseenter');
 
             var searchInFocus = false;
-            that._e.search.$nav.find('> a').on('click', function(){
+            that._e.search.$nav.find('> a').on('click', function(e){
                 var el = $(this).parent();
                 showSubNav(el);
                 if (el.hasClass('search-nav')) {
@@ -216,7 +216,7 @@ $.fn.enableSelection = function() {
                 }, 250);
             });
 
-            $(document).on('click', function(){
+            $(document).on('click', function(e){
                 if (that._e.$navTop.has(e.target).length === 0) {
                     that._e.$navTop.removeClass('hover');
                 }
