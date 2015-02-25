@@ -195,6 +195,8 @@ $.fn.enableSelection = function() {
                 $(this).removeClass('hover');
             });
 
+            that._e.search.$nav.off('mouseenter');
+
             var searchInFocus = false;
             that._e.search.$nav.find('> a').on('click', function(){
                 var el = $(this).parent();
@@ -219,6 +221,8 @@ $.fn.enableSelection = function() {
                     that._e.$navTop.removeClass('hover');
                 }
             });
+
+
         },
         randomPassageLinkEvent: function(){
             var that = this;
