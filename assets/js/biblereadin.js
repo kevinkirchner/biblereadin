@@ -203,10 +203,10 @@ $.fn.enableSelection = function() {
                 });
 
                 that._e.search.$input.on('blur', function(e){
+                    searchInFocus = false;
                     setTimeout(function(){
                         if(!searchInFocus) {
                             that._e.$navTop.removeClass('hover');
-                            searchInFocus = false;
                         }
                     }, 250);
                 });
