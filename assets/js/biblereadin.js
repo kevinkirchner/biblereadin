@@ -185,7 +185,7 @@ $.fn.enableSelection = function() {
                     that._e.$navTop.trigger('mouseleave');
                     el.addClass('hover');
                     if (el.hasClass('search-nav')) {
-                        that._e.search.$input.select();
+                        that._e.search.$input.trigger('focus');
                     }
                 }).on('mouseleave', function(){
                     if (that._f.showingTour) return;
@@ -196,7 +196,7 @@ $.fn.enableSelection = function() {
                     var el = $(this).parent();
                     el.addClass('hover');
                     if (el.hasClass('search-nav')) {
-                        that._e.search.$input.select();
+                        that._e.search.$input.trigger('focus');
                     }
                 });
 
@@ -264,9 +264,6 @@ $.fn.enableSelection = function() {
             this._e.search.$input.typeahead({
                 source: bible.allBooks
             });
-            this._e.search.$form.find('.typeahead li').on('click', function(){
-                this._e.search.$input.attr('type', 'number');
-            })
         },
         searchSubmitEvent: function(){
             var that = this;
@@ -275,7 +272,7 @@ $.fn.enableSelection = function() {
                 if (!that._f.showingTour) that._e.search.$nav.removeClass('hover');
                 var psg = that._e.search.$input.val();
                 that.loadPassage( psg ).complete(function(){
-                    // that._e.search.$input.val('');
+                    that._e.search.$input.val('');
                 });
             })
         },
