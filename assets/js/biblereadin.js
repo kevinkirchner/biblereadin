@@ -200,7 +200,7 @@ $.fn.enableSelection = function() {
                     }
                 });
 
-                $(document).on('click', function(e){
+                $('*').on('click', function(e){
                     if (that._e.$navTop.has(e.target).length === 0) {
                         that._e.$navTop.removeClass('hover');
                     }
