@@ -208,7 +208,7 @@ $.fn.enableSelection = function() {
                             that._e.$navTop.removeClass('hover');
                             searchInFocus = false;
                         }
-                    })
+                    }, 250);
                 });
             }
         },
