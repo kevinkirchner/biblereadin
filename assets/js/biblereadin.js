@@ -153,6 +153,7 @@ $.fn.enableSelection = function() {
             that.passageLinkEvent();
             that.killHashLinkEvent();
             that.watchForTypingEvent();
+            that.attachTouchEvents();
 
             that._e.$w.on('scroll', function(){
                 var st = that._e.$w.scrollTop();
@@ -387,6 +388,12 @@ $.fn.enableSelection = function() {
                 }
             }).on('click',function(e){
                 if (that._e.search.$nav.has(e.target).length === 0) that._e.search.$nav.trigger('mouseleave');
+            });
+        },
+        attachTouchEvents: function() {
+            var that = this;
+            that._e.search.$nav.find('> a').on('click', function(){
+                that._e.search.$input.focus();
             });
         },
         /**
