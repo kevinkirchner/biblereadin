@@ -189,6 +189,8 @@ $.fn.enableSelection = function() {
                 showSubNav(el);
                 if (el.hasClass('search-nav')) {
                     that._e.search.$input.trigger('focus');
+                } else {
+                    that._e.search.$input.trigger('blur');
                 }
             }).on('mouseleave', function(e){
                 if (that._f.showingTour) return;
