@@ -178,39 +178,47 @@ $.fn.enableSelection = function() {
         },
         navHoverEvent: function(){
             var that = this;
-            if(screen.width > 900) {
-                that._e.$navTop.on('mouseenter', function(){
-                    if (that._f.showingTour && that._f.tourStep != 'search') return;
-                    var el = $(this);
-                    that._e.$navTop.trigger('mouseleave');
-                    el.addClass('hover');
-                    if (el.hasClass('search-nav')) {
-                        that._e.search.$input.trigger('focus');
-                    }
-                }).on('mouseleave', function(){
-                    if (that._f.showingTour) return;
-                    $(this).removeClass('hover');
-                });
-            } else {
-                var searchInFocus = false;
-                that._e.$navTop.find('> a').on('click', function(){
-                    var el = $(this).parent();
-                    el.addClass('hover');
-                    if (el.hasClass('search-nav')) {
-                        that._e.search.$input.trigger('focus');
-                        searchInFocus = true;
-                    }
-                });
-
-                that._e.search.$input.on('blur', function(e){
-                    searchInFocus = false;
-                    setTimeout(function(){
-                        if(!searchInFocus) {
-                            that._e.$navTop.removeClass('hover');
-                        }
-                    }, 250);
-                });
+            var showSubNav = function(el) {
+                that._e.$navTop.removeClass('hover');
+                el.addClass('hover');
             }
+
+            that._e.$navTop.on('mouseenter', function(){
+                if (that._f.showingTour && that._f.tourStep != 'search') return;
+                var el = $(this);
+                showSubNav(el);
+                if (el.hasClass('search-nav')) {
+                    that._e.search.$input.trigger('focus');
+                }
+            }).on('mouseleave', function(){
+                if (that._f.showingTour) return;
+                $(this).removeClass('hover');
+            });
+
+            var searchInFocus = false;
+            that._e.search.$nav.find('> a').on('click', function(){
+                var el = $(this).parent();
+                showSubNav(el);
+                if (el.hasClass('search-nav')) {
+                    that._e.search.$input.trigger('focus');
+                    searchInFocus = true;
+                }
+            });
+
+            that._e.search.$input.on('blur', function(e){
+                searchInFocus = false;
+                setTimeout(function(){
+                    if(!searchInFocus) {
+                        that._e.$navTop.removeClass('hover');
+                    }
+                }, 250);
+            });
+
+            $(document).on('click', function(){
+                if (that._e.$navTop.has(e.target).length === 0) {
+                    that._e.$navTop.removeClass('hover');
+                }
+            });
         },
         randomPassageLinkEvent: function(){
             var that = this;
