@@ -153,7 +153,6 @@ $.fn.enableSelection = function() {
             that.passageLinkEvent();
             that.killHashLinkEvent();
             that.watchForTypingEvent();
-            that.attachTouchEvents();
 
             that._e.$w.on('scroll', function(){
                 var st = that._e.$w.scrollTop();
@@ -179,18 +178,34 @@ $.fn.enableSelection = function() {
         },
         navHoverEvent: function(){
             var that = this;
-            that._e.$navTop.on('mouseenter', function(){
-                if (that._f.showingTour && that._f.tourStep != 'search') return;
-                var el = $(this);
-                that._e.$navTop.trigger('mouseleave');
-                el.addClass('hover');
-                if (el.hasClass('search-nav')) {
-                    that._e.search.$input.trigger('focus');
-                }
-            }).on('mouseleave', function(){
-                if (that._f.showingTour) return;
-                $(this).removeClass('hover');
-            });
+            if(screen.width > 900) {
+                that._e.$navTop.on('mouseenter', function(){
+                    if (that._f.showingTour && that._f.tourStep != 'search') return;
+                    var el = $(this);
+                    that._e.$navTop.trigger('mouseleave');
+                    el.addClass('hover');
+                    if (el.hasClass('search-nav')) {
+                        that._e.search.$input.trigger('focus');
+                    }
+                }).on('mouseleave', function(){
+                    if (that._f.showingTour) return;
+                    $(this).removeClass('hover');
+                });
+            } else {
+                that._e.$navTop.find('> a').on('click', function(){
+                    var el = $(this).parent();
+                    el.addClass('hover');
+                    if (el.hasClass('search-nav')) {
+                        that._e.search.$input.trigger('focus');
+                    }
+                });
+
+                $(document).on('click', function(e){
+                    if (that._e.$navTop.has(e.target).length === 0) {
+                        that._e.$navTop.removeClass('hover');
+                    }
+                });
+            }
         },
         randomPassageLinkEvent: function(){
             var that = this;
@@ -388,12 +403,6 @@ $.fn.enableSelection = function() {
                 }
             }).on('click',function(e){
                 if (that._e.search.$nav.has(e.target).length === 0) that._e.search.$nav.trigger('mouseleave');
-            });
-        },
-        attachTouchEvents: function() {
-            var that = this;
-            that._e.search.$nav.find('> a').on('click', function(){
-                that._e.search.$input.focus();
             });
         },
         /**
