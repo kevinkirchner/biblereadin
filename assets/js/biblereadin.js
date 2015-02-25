@@ -292,7 +292,7 @@ $.fn.enableSelection = function() {
                 if (!that._f.showingTour) that._e.search.$nav.removeClass('hover');
                 var psg = that._e.search.$input.val();
                 that.loadPassage( psg ).complete(function(){
-                    that._e.search.$input.val('');
+                    that._e.search.$input.val('').trigger('blur');
                 });
             })
         },
