@@ -209,7 +209,7 @@ $.fn.enableSelection = function() {
                 searchInFocus = false;
                 setTimeout(function(){
                     if(!searchInFocus) {
-                        that._e.$navTop.removeClass('hover');
+                        that._e.search.$nav.removeClass('hover');
                     }
                 }, 250);
             });
