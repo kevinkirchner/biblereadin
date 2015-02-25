@@ -201,14 +201,11 @@ $.fn.enableSelection = function() {
                         searchInFocus = true;
                     }
                 });
-                console.log('on');
+
                 that._e.search.$input.on('blur', function(e){
-                    console.log('blur');
                     searchInFocus = false;
                     setTimeout(function(){
-                        console.log('timeout');
                         if(!searchInFocus) {
-                            console.log('removeClass');
                             that._e.$navTop.removeClass('hover');
                         }
                     }, 250);
