@@ -192,18 +192,23 @@ $.fn.enableSelection = function() {
                     $(this).removeClass('hover');
                 });
             } else {
+                var searchInFocus = false;
                 that._e.$navTop.find('> a').on('click', function(){
                     var el = $(this).parent();
                     el.addClass('hover');
                     if (el.hasClass('search-nav')) {
                         that._e.search.$input.trigger('focus');
+                        searchInFocus = true;
                     }
                 });
 
-                $('*').on('click', function(e){
-                    if (that._e.$navTop.has(e.target).length === 0) {
-                        that._e.$navTop.removeClass('hover');
-                    }
+                that._e.search.$input.on('blur', function(e){
+                    setTimeout(function(){
+                        if(!searchInFocus) {
+                            that._e.$navTop.removeClass('hover');
+                            searchInFocus = false;
+                        }
+                    })
                 });
             }
         },
