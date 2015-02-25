@@ -203,11 +203,12 @@ $.fn.enableSelection = function() {
                 showSubNav(el);
                 if (el.hasClass('search-nav')) {
                     that._e.search.$input.trigger('focus');
-                    searchInFocus = true;
                 }
             });
 
-            that._e.search.$input.on('blur', function(e){
+            that._e.search.$input.on('focus', function(e){
+                searchInFocus = true;
+            }).on('blur', function(e){
                 searchInFocus = false;
                 setTimeout(function(){
                     if(!searchInFocus) {
